@@ -83,6 +83,7 @@
     "d /secrets 0750 root wheel"
   ];
 
+  # Set up users
   users.users = {
     pceiley = {
       # If you do, you can skip setting a root password by passing '--no-root-passwd' to nixos-install.
@@ -93,6 +94,13 @@
       ];
       extraGroups = [ "wheel" ];
       shell = pkgs.fish;
+    };
+  };
+
+  # Set up groups
+  users.groups = {
+    media = {
+      members = [ "pceiley" "plex" ];
     };
   };
 
@@ -112,17 +120,17 @@
   fileSystems."/net/share" = {
       device = "//192.168.10.2/share";
       fsType = "cifs";
-      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,credentials=/secrets/smb.txt"];
+      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,uid=root,gid=wheel,dir_mode=0750,file_mode=0640,credentials=/secrets/smb.txt"];
   };
   fileSystems."/net/media" = {
       device = "//192.168.10.2/media";
       fsType = "cifs";
-      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,credentials=/secrets/smb.txt"];
+      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,uid=root,gid=wheel,dir_mode=0755,file_mode=0644,credentials=/secrets/smb.txt"];
   };
   fileSystems."/net/backup" = {
       device = "//192.168.10.2/backup";
       fsType = "cifs";
-      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,credentials=/secrets/smb.txt"];
+      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,uid=root,gid=wheel,dir_mode=0750,file_mode=0640,credentials=/secrets/smb.txt"];
   };
 
   # Fish Shell
