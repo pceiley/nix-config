@@ -27,6 +27,15 @@
       #     patches = [ ./change-hello-to-hi.patch ];
       #   });
       # })
+
+      # When applied, the unstable nixpkgs set (declared in the flake inputs) will
+      # be accessible through 'pkgs.unstable'
+      (final: prev: {
+        unstable = import inputs.nixpkgs-unstable {
+          system = final.system;
+          config.allowUnfree = true;
+        };
+      })
     ];
     # Configure your nixpkgs instance
     config = {
@@ -89,14 +98,14 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    cifs-utils
-    git
-    htop
-    micro
-    screen
-    vim
-    wget
+  environment.systemPackages = [
+    pkgs.cifs-utils
+    pkgs.git
+    pkgs.htop
+    pkgs.micro
+    pkgs.screen
+    pkgs.vim
+    pkgs.wget
   ];
 
   # CIFS mounts
@@ -159,6 +168,7 @@
   services.plex = {
     enable = true;
     openFirewall = true;
+    package = pkgs.unstable.plex;
   };
 
   # Unifi controller
