@@ -1,0 +1,3 @@
+export RCLONE_CONFIG=/secrets/rclone.conf
+export RESTIC_REPOSITORY="rclone:onedrive:restic-purecheese"
+export RESTIC_PASSWORD_FILE="/secrets/restic.txt"

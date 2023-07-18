@@ -16,6 +16,9 @@
    
     # Restic Backups
     ./restic-config.nix
+
+    # Mullvad Wireguard interface
+    #./mullvadwg-config.nix
   ];
 
   nixpkgs = {

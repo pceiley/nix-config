@@ -1,2 +1,0 @@
-export RESTIC_REPOSITORY="/mnt/backupusb/restic-purecheese"
-export RESTIC_PASSWORD_FILE="/secrets/restic.txt"
