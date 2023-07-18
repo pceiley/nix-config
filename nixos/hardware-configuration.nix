@@ -23,6 +23,12 @@
       fsType = "vfat";
     };
 
+  fileSystems."/mnt/backupusb" =
+    { device = "/dev/disk/by-uuid/2f40a937-359e-49b8-8563-b66f679f17f8";
+      fsType = "ext4";
+      options = [ "nofail,x-systemd.device-timeout=1ms,noauto,x-systemd.automount" ];
+    };
+
   swapDevices = [ ];
 
   zramSwap.enable = true;

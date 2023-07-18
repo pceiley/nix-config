@@ -13,6 +13,9 @@
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
+   
+    # Restic Backups
+    ./restic-config.nix
   ];
 
   nixpkgs = {
@@ -106,14 +109,15 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = [
-    pkgs.cifs-utils
-    pkgs.git
-    pkgs.htop
-    pkgs.micro
-    pkgs.screen
-    pkgs.vim
-    pkgs.wget
+  environment.systemPackages = with pkgs; [
+    cifs-utils
+    git
+    htop
+    micro
+    restic
+    screen
+    vim
+    wget
   ];
 
   # CIFS mounts
