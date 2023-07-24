@@ -17,8 +17,8 @@
     # Restic Backups
     ./restic-config.nix
 
-    # Mullvad Wireguard interface
-    #./mullvadwg-config.nix
+    # Containers
+    ./containers-config.nix
   ];
 
   nixpkgs = {
@@ -107,6 +107,7 @@
   users.groups = {
     media = {
       members = [ "pceiley" "plex" ];
+      gid = 800;
     };
   };
 
@@ -117,6 +118,7 @@
     git
     htop
     micro
+    podman
     restic
     screen
     vim
@@ -132,7 +134,7 @@
   fileSystems."/net/media" = {
       device = "//192.168.10.2/media";
       fsType = "cifs";
-      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,uid=root,gid=wheel,dir_mode=0755,file_mode=0644,credentials=/secrets/smb.txt"];
+      options = ["x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,uid=root,gid=media,dir_mode=0775,file_mode=0664,credentials=/secrets/smb.txt"];
   };
   fileSystems."/net/backup" = {
       device = "//192.168.10.2/backup";
@@ -197,6 +199,9 @@
   networking.firewall.allowedTCPPorts = [ 8443 ];
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
+
+  # Enable the use of containers
+  virtualisation.containers.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.05";
