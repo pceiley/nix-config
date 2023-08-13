@@ -2,7 +2,6 @@
   description = "Peter's Nix config";
 
   inputs = {
-    # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -12,7 +11,7 @@
 
     # TODO: Add any other flake you might need
     # hardware.url = "github:nixos/nixos-hardware";
-
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, ... }@inputs: {
@@ -21,8 +20,11 @@
     nixosConfigurations = {
       superslice = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; }; # Pass flake inputs to our config
-        # > Our main nixos configuration file <
         modules = [ ./nixos/configuration.nix ];
+      };
+      taftugs = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; }; # Pass flake inputs to our config
+        modules = [ ./hosts/taftugs ];
       };
     };
 
