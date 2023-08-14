@@ -25,6 +25,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";
       fsType = "xfs";
+      options = [ "defaults" "noatime" ];
     };
 
   fileSystems."/boot" =
