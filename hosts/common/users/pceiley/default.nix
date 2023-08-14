@@ -2,8 +2,9 @@
 let ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
 {
-  users.mutableUsers = false;
+  #users.mutableUsers = false;
   users.users.pceiley = {
+    initialPassword = "Chang3m3";
     isNormalUser = true;
     shell = pkgs.fish;
     extraGroups = [

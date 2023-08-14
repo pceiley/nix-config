@@ -1,6 +1,5 @@
 # HP Elitedesk 800 G4 SFF
-{ inputs, lib, ... }:
-{
+{ inputs, lib, ... }: {
   imports = [
     ../common
     ../common/users/pceiley
@@ -18,17 +17,34 @@
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 10;
       systemd-boot.enable = true;
-      systemd-boot.memtest86.enable = true;
+      #systemd-boot.memtest86.enable = true;
       timeout = 10;
     };
   };
 
+  fileSystems."/" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "xfs";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-label/boot";
+      fsType = "vfat";
+    };
+
+  zramSwap.enable = true;
+
   networking = {
     hostName = "taftugs";
-    useDHCP = true;
+    defaultGateway = "192.168.10.254";
+    interfaces.eno1.ipv4.addresses = [{
+      address = "192.168.10.3";
+      prefixLength = 24;
+    }];
+    nameservers = [ "192.168.10.254" ];
+    useDHCP = lib.mkForce false;
   };
-  
-  zramSwap.enable = true;
+
 
   system.stateVersion = "22.05";
   

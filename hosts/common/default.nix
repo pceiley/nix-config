@@ -1,20 +1,29 @@
 # This file (and the global directory) holds config that i use on all hosts
-{ inputs, outputs, ... }: {
+{ inputs, outputs, pkgs, lib, ... }: {
   imports = [
     ./openssh.nix
-  ] ++ (builtins.attrValues outputs.nixosModules);
+  ];
 
   nixpkgs = {
-    overlays = builtins.attrValues outputs.overlays;
+    overlays = [
+      # Make unstable nixpkgs accessible through 'pkgs.unstable'
+      (final: prev: {
+        unstable = import inputs.nixpkgs-unstable {
+          system = final.system;
+          config.allowUnfree = true;
+        };
+      })
+    ];
+
+    # Configure your nixpkgs instance
     config = {
+      # Disable if you don't want unfree packages
       allowUnfree = true;
     };
   };
 
   hardware.enableRedistributableFirmware = true;
   #networking.domain = "m7.rs";
-
-  # Dumped configs here - I might split these out later
 
   # Locale
   time.timeZone = "Australia/Sydney";                                       
