@@ -37,7 +37,7 @@ in
     };
 
     remotebackup = {
-      initialize = true;
+      #initialize = true;
       exclude = excludes;
       passwordFile = secretsFile;
       paths = [ backupTarget ];

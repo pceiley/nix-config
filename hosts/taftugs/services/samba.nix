@@ -34,22 +34,22 @@
     '';
     shares = {
       family = {
-        path = "/net/share";
+        path = "/data/family";
         browseable = "yes";
         "read only" = "yes";
         "guest ok" = "no";
-        "create mask" = "0640";
-        "directory mask" = "0750";
+        "create mask" = "0660";
+        "directory mask" = "2770";
         "force user" = "pceiley";
         "force group" = "family";
       };
       multimedia = {
-        path = "/net/media";
+        path = "/data/multimedia";
         browseable = "yes";
         "read only" = "yes";
         "guest ok" = "no";
-        "create mask" = "0640";
-        "directory mask" = "0750";
+        "create mask" = "0660";
+        "directory mask" = "2770";
         "force user" = "pceiley";
         "force group" = "multimedia";
       };

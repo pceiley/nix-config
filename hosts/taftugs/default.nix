@@ -5,8 +5,8 @@
     ../common/users/pceiley
     ../common/users/cceiley
 
-    #./services/nfs-cheddar.nix
-    #./services/samba.nix
+    ./services/nfs-cheddar.nix
+    ./services/samba.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-intel
