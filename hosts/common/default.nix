@@ -17,7 +17,6 @@
 
     # Configure your nixpkgs instance
     config = {
-      # Disable if you don't want unfree packages
       allowUnfree = true;
     };
   };
@@ -62,14 +61,13 @@
   };
 
   # Filesystem
-  systemd.tmpfiles.rules = [
-    "d /secrets 0750 root wheel"
-  ];
+  #systemd.tmpfiles.rules = [
+  #  "d /secrets 0750 root wheel"
+  #];
 
   # Environment
   environment = {
     systemPackages = with pkgs; [
-      #cifs-utils
       git
       htop
       micro
@@ -81,9 +79,9 @@
       wget
     ];
     variables = {
-      EDITOR = "micro";
-      SYSTEMD_EDITOR = "micro";
-      VISUAL = "micro";
+      EDITOR = "vim";
+      SYSTEMD_EDITOR = "vim";
+      VISUAL = "vim";
     };
   };
 
@@ -95,7 +93,7 @@
       shellAbbrs = {
         nix-gc = "sudo nix-collect-garbage --delete-older-than 14d";
         rebuild-host = "sudo nixos-rebuild switch --flake $HOME/nix-config";
-        rebuild-lock = "pushd $HOME/Zero/nix-config && nix flake lock --recreate-lock-file && popd";
+        rebuild-lock = "pushd $HOME/nix-config && nix flake lock --recreate-lock-file && popd";
       };
       shellAliases = {
         moon = "curl -s wttr.in/Moon";
