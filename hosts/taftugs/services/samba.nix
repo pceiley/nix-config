@@ -12,8 +12,8 @@
 
   # Set up groups for samba shares
   users.groups = {
-    family = { };
-    multimedia = { };
+    family.gid = 8888;
+    multimedia.gid = 8889;
   };
 
   services.samba = {
@@ -27,7 +27,7 @@
       #use sendfile = yes
       #max protocol = smb2
       # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.10. 127.0.0.1 localhost
+      hosts allow = 192.168.10. 192.168.40. 127.0.0.1 localhost
       hosts deny = 0.0.0.0/0
       guest account = nobody
       map to guest = bad user
@@ -36,21 +36,21 @@
       family = {
         path = "/data/family";
         browseable = "yes";
-        "read only" = "yes";
+        "read only" = "no";
         "guest ok" = "no";
         "create mask" = "0660";
         "directory mask" = "2770";
-        "force user" = "pceiley";
+        #"force user" = "pceiley";
         "force group" = "family";
       };
       multimedia = {
         path = "/data/multimedia";
         browseable = "yes";
-        "read only" = "yes";
+        "read only" = "no";
         "guest ok" = "no";
         "create mask" = "0660";
         "directory mask" = "2770";
-        "force user" = "pceiley";
+        #"force user" = "pceiley";
         "force group" = "multimedia";
       };
     };

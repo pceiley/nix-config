@@ -6,9 +6,9 @@
 let
   secretsFile = "/persist/secrets/restic.txt";
   rcloneFile = "/persist/secrets/rclone.conf";
-  localRepo = "/mnt/backupusb/restic-purecheese";
+  localRepo = "/mnt/usb-backup/restic-purecheese";
   remoteRepo = "rclone:onedrive:restic-purecheese";
-  backupTarget = "/net/share";
+  backupTarget = "/data/family";
   excludes = [
     "${backupTarget}/Google Photos"
     "${backupTarget}/Music/Old iTunes"
@@ -28,7 +28,7 @@ in
       exclude = excludes;
       passwordFile = secretsFile;
       paths = [ backupTarget ];
-      repository = $localRepo;
+      repository = localRepo;
       timerConfig = {
         OnCalendar = "00:30";
         #RandomizedDelaySec = "1h";
@@ -41,7 +41,7 @@ in
       exclude = excludes;
       passwordFile = secretsFile;
       paths = [ backupTarget ];
-      repository = $remoteRepo;
+      repository = remoteRepo;
       rcloneConfigFile = rcloneFile;
       timerConfig = {
         OnCalendar = "02:00";
@@ -52,8 +52,8 @@ in
   };
 
   programs.fish.shellAliases = {
-    restic_local_env = "sudo RESTIC_REPOSITORY="${localRepo}" RESTIC_PASSWORD_FILE="${secretsFile}" -i";
-    restic_remote_env = "sudo RCLONE_CONFIG=${rcloneFile} RESTIC_REPOSITORY="${remoteRepo}" RESTIC_PASSWORD_FILE="${secretsFile}" -i";
+    restic_local_env = "sudo RESTIC_REPOSITORY=${localRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";
+    restic_remote_env = "sudo RCLONE_CONFIG=${rcloneFile} RESTIC_REPOSITORY=${remoteRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";
   };
 }
 

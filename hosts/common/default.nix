@@ -2,6 +2,7 @@
 { inputs, outputs, pkgs, lib, ... }: {
   imports = [
     ./openssh.nix
+    ./smtp.nix
   ];
 
   nixpkgs = {

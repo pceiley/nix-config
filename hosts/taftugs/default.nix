@@ -5,8 +5,12 @@
     ../common/users/pceiley
     ../common/users/cceiley
 
-    ./services/nfs-cheddar.nix
+    #./services/nfs-cheddar.nix
+    ./services/plex.nix
+    ./services/qbittorrent.nix
+    ./services/restic.nix
     ./services/samba.nix
+    ./services/unifi.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-intel
@@ -46,6 +50,12 @@
     device = "/swap";
     size = 2048;
   }];
+
+  fileSystems."/mnt/usb-backup" =
+    { device = "/dev/disk/by-uuid/2f40a937-359e-49b8-8563-b66f679f17f8";
+      fsType = "ext4";
+      options = [ "nofail,x-systemd.device-timeout=1ms,noauto,x-systemd.automount" ];
+    };
 
   #zramSwap.enable = true;
 

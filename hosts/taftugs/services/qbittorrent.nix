@@ -20,6 +20,7 @@ in
       isSystemUser = true;
       uid = UID;
       group = "pod-qbittorrent";
+      extraGroups = [ "multimedia" ];
     };    
   };      
   users.groups.pod-qbittorrent = {
@@ -27,7 +28,7 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "d /srv/qbittorrent 0750 pod-qbittorrent pod-qbittorrent"
+    "d /srv/qbittorrent 0755 pod-qbittorrent pod-qbittorrent"
   ];
 
   # qBittorrent container
@@ -53,7 +54,7 @@ in
       ];
       volumes = [
         "/srv/qbittorrent:/config"
-        #"/net/media/Staging:/nas-staging"
+        "/data/multimedia/Staging:/staging"
       ];
     };
   };
