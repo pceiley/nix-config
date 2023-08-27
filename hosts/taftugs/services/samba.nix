@@ -48,8 +48,8 @@
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "create mask" = "0660";
-        "directory mask" = "2770";
+        "create mask" = "0664";
+        "directory mask" = "2775";
         #"force user" = "pceiley";
         "force group" = "multimedia";
       };

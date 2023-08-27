@@ -2,8 +2,11 @@
 { inputs, lib, ... }: {
   imports = [
     ../common
+
     ../common/users/pceiley
     ../common/users/cceiley
+
+    ../common/modules/qbittorrent.nix
 
     #./services/nfs-cheddar.nix
     ./services/plex.nix
@@ -11,6 +14,7 @@
     ./services/restic.nix
     ./services/samba.nix
     ./services/unifi.nix
+    ./services/wireguard-wg0.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-intel

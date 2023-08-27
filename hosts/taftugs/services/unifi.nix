@@ -7,6 +7,7 @@
     enable = true;
     openFirewall = true;
     unifiPackage = pkgs.unifi;
+    maximumJavaHeapSize = 2048;
   };
 
   # Open firewall for web interface
