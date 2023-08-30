@@ -1,5 +1,5 @@
 # HP Elitedesk 800 G4 SFF
-{ inputs, lib, ... }: {
+{ inputs, lib, pkgs, ... }: {
   imports = [
     ../common
 
@@ -62,6 +62,29 @@
     };
 
   #zramSwap.enable = true;
+
+  # ZFS Configuration - I might move this out of here
+  services.zfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+  };
+
+  # Enable ZFS email notifications
+  # ref https://nixos.wiki/wiki/ZFS
+  services.zfs.zed.settings = {
+    ZED_DEBUG_LOG = "/tmp/zed.debug.log";
+    ZED_EMAIL_ADDR = [ "root" ];
+    ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
+    ZED_EMAIL_OPTS = "@ADDRESS@";
+
+    ZED_NOTIFY_INTERVAL_SECS = 3600;
+    ZED_NOTIFY_VERBOSE = true;
+
+    ZED_USE_ENCLOSURE_LEDS = true;
+    ZED_SCRUB_AFTER_RESILVER = true;
+  };
+  # this option does not work; will return error
+  services.zfs.zed.enableMail = false;
 
   networking = {
     hostName = "taftugs";
