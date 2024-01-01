@@ -5,7 +5,7 @@ in
   users.mutableUsers = false;
 
   users.users.pceiley = {
-    passwordFile = "/persist/secrets/passwords/pceiley";
+    hashedPasswordFile = "/persist/secrets/passwords/pceiley";
     #initialPassword = "Chang3m3";
     isNormalUser = true;
     shell = pkgs.fish;
