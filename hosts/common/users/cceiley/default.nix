@@ -10,6 +10,7 @@ in
     ] ++ ifTheyExist [
       "family"
       "multimedia"
+      "paperless"
     ];
   };
 }

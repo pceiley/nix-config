@@ -1,5 +1,5 @@
 # HP Elitedesk 800 G4 SFF
-{ inputs, lib, pkgs, ... }: {
+{ inputs, lib, pkgs, config, ... }: {
   imports = [
     ../common
 
@@ -9,9 +9,13 @@
     ../common/modules/qbittorrent.nix
 
     #./services/nfs-cheddar.nix
+    ./services/jellyfin.nix
+    ./services/nextcloud.nix
+    ./services/paperless.nix
     ./services/plex.nix
     ./services/qbittorrent.nix
     ./services/restic.nix
+    ./services/rp.nix
     ./services/samba.nix
     ./services/unifi.nix
     ./services/wireguard-wg0.nix
@@ -85,6 +89,23 @@
   };
   # this option does not work; will return error
   services.zfs.zed.enableMail = false;
+
+  # Tailscale
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "server";
+
+  # ACME
+  # LetsEncrypt wildcard certificate for *.purecheese.roastlan.net
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "admin@roastlan.net";
+    certs."pc.roastlan.net" = {
+      domain = "*.pc.roastlan.net";
+      dnsProvider = "cloudflare";
+      credentialsFile = "/persist/secrets/acme.txt";
+      group = config.services.nginx.group;
+    };
+  };
 
   networking = {
     hostName = "taftugs";

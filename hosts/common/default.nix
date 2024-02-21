@@ -69,6 +69,8 @@
   # Environment
   environment = {
     systemPackages = with pkgs; [
+      bottom
+      dig
       git
       htop
       micro

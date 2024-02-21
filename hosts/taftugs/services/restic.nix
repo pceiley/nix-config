@@ -9,6 +9,7 @@ let
   localRepo = "/mnt/usb-backup/restic-purecheese";
   remoteRepo = "rclone:onedrive:restic-purecheese";
   backupTarget = "/data/family";
+  backupPaperless = "/var/lib/paperless";
   excludes = [
     "${backupTarget}/Google Photos"
     "${backupTarget}/Music/Old iTunes"
@@ -27,7 +28,7 @@ in
       #initialize = true;
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget ];
+      paths = [ backupTarget backupPaperless ];
       repository = localRepo;
       timerConfig = {
         OnCalendar = "00:30";
@@ -40,7 +41,7 @@ in
       #initialize = true;
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget ];
+      paths = [ backupTarget backupPaperless ];
       repository = remoteRepo;
       rcloneConfigFile = rcloneFile;
       timerConfig = {

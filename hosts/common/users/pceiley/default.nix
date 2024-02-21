@@ -16,6 +16,7 @@ in
       "multimedia"
       "network"
       "docker"
+      "paperless"
       "podman"
       "git"
       "libvirtd"
