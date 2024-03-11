@@ -18,7 +18,7 @@
     nixosConfigurations = {
       superslice = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; }; # Pass flake inputs to our config
-        modules = [ ./nixos/configuration.nix ];
+        modules = [ ./hosts/superslice ];
       };
       taftugs = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; }; # Pass flake inputs to our config

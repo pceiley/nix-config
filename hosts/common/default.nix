@@ -23,7 +23,6 @@
   };
 
   hardware.enableRedistributableFirmware = true;
-  #networking.domain = "m7.rs";
 
   # Locale
   time.timeZone = "Australia/Sydney";                                       

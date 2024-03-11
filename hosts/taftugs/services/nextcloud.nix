@@ -75,4 +75,12 @@ in
       #};
     };
   };
+
+  # Backup
+  services.postgresqlBackup = {
+    enable = true;
+    databases = [ "nextcloud" ];
+    location = "/data/backup/nextcloud";
+  };
+
 }
