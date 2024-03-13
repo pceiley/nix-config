@@ -17,11 +17,10 @@
     ./services/restic.nix
     ./services/rp.nix
     ./services/samba.nix
-    ./services/unifi.nix
+    #./services/unifi.nix
     ./services/wireguard-wg0.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
-    inputs.nixos-hardware.nixosModules.common-gpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
     inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
@@ -54,10 +53,10 @@
       fsType = "vfat";
     };
   
-  swapDevices = [{
-    device = "/swap";
-    size = 2048;
-  }];
+  #swapDevices = [{
+  #  device = "/swap";
+  #  size = 2048;
+  #}];
 
   fileSystems."/mnt/usb-backup" =
     { device = "/dev/disk/by-uuid/2f40a937-359e-49b8-8563-b66f679f17f8";
@@ -65,7 +64,7 @@
       options = [ "nofail,x-systemd.device-timeout=1ms,noauto,x-systemd.automount" ];
     };
 
-  #zramSwap.enable = true;
+  zramSwap.enable = true;
 
   # ZFS Configuration - I might move this out of here
   services.zfs.autoScrub = {
