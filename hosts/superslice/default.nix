@@ -6,7 +6,8 @@
     ../common/users/pceiley
     ../common/users/cceiley
 
-    #./services/unifi.nix
+    #./services/container-unifi.nix
+    ./services/unifi.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
@@ -37,10 +38,12 @@
       fsType = "vfat";
     };
   
-  swapDevices = [{
-    device = "/swap";
-    size = 2048;
-  }];
+  #swapDevices = [{
+  #  device = "/swap";
+  #  size = 2048;
+  #}];
+
+  zramSwap.enable = true;
 
   services.thermald.enable = lib.mkDefault true;
 

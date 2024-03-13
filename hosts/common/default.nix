@@ -79,6 +79,7 @@
       unzip
       vim
       wget
+      zellij
     ];
     variables = {
       EDITOR = "vim";
