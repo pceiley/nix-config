@@ -6,8 +6,8 @@
   services.paperless = {
     enable = true;
     mediaDir = "/data/family/paperless";
-    extraConfig.PAPERLESS_ADMIN_USER = "paperless_a";
-    extraConfig.PAPERLESS_FILENAME_FORMAT = "{created_year}/{correspondent}/{title}";
+    settings.PAPERLESS_ADMIN_USER = "paperless_a";
+    settings.PAPERLESS_FILENAME_FORMAT = "{created_year}/{correspondent}/{title}";
   };
 
   services.nginx = {

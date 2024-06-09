@@ -41,17 +41,21 @@ in
         #};
     };
 
+    settings = {
+      overwriteprotocol = "https";
+      default_phone_region = "AU";
+      "localstorage.umask" = "0007";
+    };
+   
     config = {
-      overwriteProtocol = "https";
-      defaultPhoneRegion = "AU";
       dbtype = "pgsql";
       adminuser = "pc_admin";
       adminpassFile = "/persist/secrets/nextcloud-admin-pass.txt";
     };
 
-    extraOptions = {
-      "localstorage.umask" = "0007";
-    };
+#    extraOptions = {
+#      "localstorage.umask" = "0007";
+#    };
 
   };
 
