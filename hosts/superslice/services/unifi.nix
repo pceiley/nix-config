@@ -6,7 +6,7 @@
   services.unifi = {
     enable = true;
     openFirewall = true;
-    unifiPackage = pkgs.unifi;
+    unifiPackage = pkgs.unifi8;
     maximumJavaHeapSize = 2048;
   };
 
