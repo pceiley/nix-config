@@ -109,13 +109,30 @@
   networking = {
     hostName = "taftugs";
     hostId = "8ec040f1";
-    defaultGateway = "192.168.10.254";
-    interfaces.eno1.ipv4.addresses = [{
-      address = "192.168.10.3";
-      prefixLength = 24;
-    }];
-    nameservers = [ "192.168.10.254" ];
+    # Should use systemd.network over networking.interfaces as better supported
+    # as per https://nixos.wiki/wiki/Systemd-networkd
+    #defaultGateway = "192.168.10.254";
+    #interfaces.eno1.ipv4.addresses = [{
+    #  address = "192.168.10.3";
+    #  prefixLength = 24;
+    #}];
+    #nameservers = [ "192.168.10.254" ];
     useDHCP = lib.mkForce false;
+  };
+
+  systemd.network.enable = true;
+
+  systemd.network.networks."10-eno1" = {
+    matchConfig.Name = "eno1";
+    networkConfig = {
+      IPv6AcceptRA = true;
+    };
+    address = [ "192.168.10.3/24" ];
+    gateway = [ "192.168.10.254" ];
+    dns = [ "192.168.10.254" ];
+
+    # make the routes on this interface a dependency for network-online.target
+    linkConfig.RequiredForOnline = "routable";
   };
 
   system.stateVersion = "22.05";
