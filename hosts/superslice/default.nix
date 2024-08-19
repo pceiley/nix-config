@@ -49,14 +49,24 @@
 
   networking = {
     hostName = "superslice";
-    defaultGateway = "192.168.5.254";
-    interfaces.eno1.ipv4.addresses = [{
-      address = "192.168.5.5";
-      prefixLength = 24;
-    }];
-    nameservers = [ "192.168.5.254" ];
     useDHCP = lib.mkForce false;
   };
+
+  systemd.network.enable = true;
+
+  systemd.network.networks."10-eno1" = {
+    matchConfig.Name = "eno1";
+    networkConfig = {
+      IPv6AcceptRA = true;
+    };
+    address = [ "192.168.5.5/24" ];
+    gateway = [ "192.168.5.254" ];
+    dns = [ "192.168.5.254" ];
+
+    # make the routes on this interface a dependency for network-online.target
+    linkConfig.RequiredForOnline = "routable";
+  };
+
 
   system.stateVersion = "23.11";
   
