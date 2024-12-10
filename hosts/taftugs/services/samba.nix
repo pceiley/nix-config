@@ -18,21 +18,18 @@
 
   services.samba = {
     enable = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = PURECHEESE
-      server string = fileserver
-      netbios name = fileserver
-      security = user 
-      #use sendfile = yes
-      #max protocol = smb2
-      # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.10. 192.168.52. 127.0.0.1 localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-    '';
-    shares = {
+    settings = {
+      global = {
+        workgroup = "PURECHEESE";
+        "server string" = "fileserver";
+        "netbios name" = "fileserver";
+        security = "user";
+        "hosts allow" = "192.168.10. 192.168.52. 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
+
       family = {
         path = "/data/family";
         browseable = "yes";
@@ -43,6 +40,7 @@
         #"force user" = "pceiley";
         "force group" = "family";
       };
+
       multimedia = {
         path = "/data/multimedia";
         browseable = "yes";

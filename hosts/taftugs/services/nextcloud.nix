@@ -12,7 +12,7 @@ in
     hostName = "cloud.pc.roastlan.net";
     
     # Need to manually increment with every major upgrade.
-    package = pkgs.nextcloud28;
+    package = pkgs.nextcloud30;
 
     # Let NixOS install and configure the database automatically.
     database.createLocally = true;
