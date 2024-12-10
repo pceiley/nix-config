@@ -18,6 +18,7 @@ in
     enable = true;
     openFirewall = true;
     dataDir = "/srv/qbittorrent";
+    package = pkgs.unstable.qbittorrent-nox;
     port = 58080;
   };
 

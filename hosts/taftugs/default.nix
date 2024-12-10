@@ -9,6 +9,7 @@
     ../common/modules/qbittorrent.nix
 
     #./services/nfs-cheddar.nix
+    #./services/freshrss.nix
     ./services/jellyfin.nix
     ./services/nextcloud.nix
     ./services/paperless.nix
