@@ -38,12 +38,12 @@
       fsType = "vfat";
     };
   
-  #swapDevices = [{
-  #  device = "/swap";
-  #  size = 2048;
-  #}];
+  swapDevices = [{
+    device = "/swap";
+    size = 32*1024;
+  }];
 
-  zramSwap.enable = true;
+  #zramSwap.enable = true;
 
   services.thermald.enable = lib.mkDefault true;
 

@@ -7,6 +7,7 @@
     enable = true;
     openFirewall = true;
     unifiPackage = pkgs.unifi8;
+    mongodbPackage = pkgs.pkgs.mongodb-7_0;
     maximumJavaHeapSize = 2048;
   };
 
