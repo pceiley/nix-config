@@ -8,22 +8,23 @@
 
     ../common/modules/qbittorrent.nix
 
-    #./services/nfs-cheddar.nix
-    #./services/freshrss.nix
+    ./services/actual.nix
+    #./services/couchdb.nix
     ./services/jellyfin.nix
+    ./services/mealie.nix
     ./services/nextcloud.nix
+    ./services/nginx.nix
     ./services/paperless.nix
     ./services/plex.nix
     ./services/qbittorrent.nix
     ./services/restic.nix
-    ./services/rp.nix
     ./services/samba.nix
-    #./services/unifi.nix
     ./services/wireguard-wg0.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
     inputs.nixos-hardware.nixosModules.common-pc-ssd
+    inputs.sops-nix.nixosModules.sops
   ];
 
   boot = {
@@ -104,6 +105,7 @@
       dnsProvider = "cloudflare";
       credentialsFile = "/persist/secrets/acme.txt";
       group = config.services.nginx.group;
+      #group = config.services.caddy.group;
     };
   };
 

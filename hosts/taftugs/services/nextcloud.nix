@@ -4,12 +4,15 @@
 # https://carjorvaz.com/posts/the-holy-grail-nextcloud-setup-made-easy-by-nixos/
 
 { pkgs, config, ... }:
-let ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+let
+  address = "cloud.pc.roastlan.net";
+  ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
 {
   services.nextcloud = {
     enable = true;
-    hostName = "cloud.pc.roastlan.net";
+    #hostName = "cloud.pc.roastlan.net";
+    hostName = "${address}";
     
     # Need to manually increment with every major upgrade.
     package = pkgs.nextcloud30;
@@ -53,10 +56,6 @@ in
       adminpassFile = "/persist/secrets/nextcloud-admin-pass.txt";
     };
 
-#    extraOptions = {
-#      "localstorage.umask" = "0007";
-#    };
-
   };
 
   users.users.nextcloud.extraGroups = ifTheyExist [ "family" ];
@@ -65,18 +64,7 @@ in
     virtualHosts."cloud.pc.roastlan.net" =  {
       #serverAliases = [ "cloud.pc.roastlan.net" ];
       forceSSL = true;
-      sslCertificateKey = "${config.security.acme.certs."pc.roastlan.net".directory}/key.pem";
-      sslCertificate = "${config.security.acme.certs."pc.roastlan.net".directory}/cert.pem";
-      #locations."/" = {
-      #  proxyPass = "http://127.0.0.1:28981";
-      #  proxyWebsockets = true; # needed if you need to use WebSocket
-      #  extraConfig =
-      #    # required when the target is also TLS server with multiple hosts
-      #    "proxy_ssl_server_name on;" +
-      #    # required when the server wants to use HTTP Authentication
-      #    "proxy_pass_header Authorization;"
-      #    ;
-      #};
+      useACMEHost = "pc.roastlan.net";
     };
   };
 
