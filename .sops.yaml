@@ -1,0 +1,23 @@
+# https://github.com/Mic92/sops-nix
+# https://unmovedcentre.com/posts/secrets-management/
+
+# Make a user key
+# mkdir -p ~/.config/sops/age
+# age-keygen -o ~/.config/sops/age/keys.txt
+
+# Get the host public key, derived from the host SSH key
+# nix run nixpkgs#ssh-to-age -- -i /etc/ssh/ssh_host_ed25519_key.pub
+
+keys:
+  - &users:
+    - &pceiley age18t293vzjk86f6lrzspf88qer6yprdnue9rys924vegvncwcmle4qeqslwn
+  - &hosts:
+    - &taftugs age1ue9s47z6rl9n094taud3gwfyrxffqtlz7asqxurtvymu9pyp8ywqggrqh6
+    - &superslice age1lrsvfrv6p9gt4472c67mqay5pmt5kldaqdqlew0tldjsnj3und0sv3qt43
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+    - age:
+      - *pceiley
+      - *taftugs
+      - *superslice

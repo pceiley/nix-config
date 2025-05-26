@@ -15,7 +15,7 @@ in
     hostName = "${address}";
     
     # Need to manually increment with every major upgrade.
-    package = pkgs.nextcloud30;
+    package = pkgs.nextcloud31;
 
     # Let NixOS install and configure the database automatically.
     database.createLocally = true;
@@ -53,7 +53,8 @@ in
     config = {
       dbtype = "pgsql";
       adminuser = "pc_admin";
-      adminpassFile = "/persist/secrets/nextcloud-admin-pass.txt";
+      #adminpassFile = "/persist/secrets/nextcloud-admin-pass.txt";
+      adminpassFile = config.sops.secrets.nextcloud_admin_password.path;
     };
 
   };
@@ -73,6 +74,12 @@ in
     enable = true;
     databases = [ "nextcloud" ];
     location = "/data/backup/nextcloud";
+  };
+
+  sops.secrets = {
+    "nextcloud_admin_password" = {
+      owner = config.users.users.nextcloud.name;
+    };
   };
 
 }

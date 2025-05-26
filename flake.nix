@@ -2,7 +2,7 @@
   description = "Peter's Nix config";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
@@ -10,6 +10,8 @@
 #    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
+
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, ... }@inputs: {

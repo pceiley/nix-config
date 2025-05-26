@@ -68,6 +68,7 @@
   # Environment
   environment = {
     systemPackages = with pkgs; [
+      age
       bottom
       dig
       git
@@ -76,6 +77,7 @@
       podman
       restic
       screen
+      sops
       unzip
       vim
       wget

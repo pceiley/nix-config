@@ -2,14 +2,14 @@
 
 { pkgs, config, inputs, ... }:
 {
-  imports = [
-    "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/actual.nix"
-  ];
+  #imports = [
+  #  "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/actual.nix"
+  #];
 
   services.actual = {
     enable = true;
     openFirewall = true;
-    package = pkgs.unstable.actual-server;
+    #package = pkgs.unstable.actual-server;
     settings = {
       hostname = "127.0.0.1";
       port = 13000;
