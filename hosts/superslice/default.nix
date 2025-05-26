@@ -12,6 +12,7 @@
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
     inputs.nixos-hardware.nixosModules.common-pc-ssd
+    inputs.sops-nix.nixosModules.sops
   ];
 
   boot = {
@@ -71,4 +72,17 @@
   system.stateVersion = "23.11";
   
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  # https://github.com/Mic92/sops-nix?tab=readme-ov-file#deploy-example
+  sops = {
+    age = {
+      # This will automatically import SSH keys as age keys
+      sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+      # This is using an age key that is expected to already be in the filesystem
+      keyFile = "/var/lib/sops-nix/key.txt";
+      # This will generate a new key if the key specified above does not exist
+      generateKey = true;
+    };
+    defaultSopsFile = ../../secrets/secrets.yaml;
+  };
 }
