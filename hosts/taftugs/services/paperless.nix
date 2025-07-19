@@ -9,6 +9,7 @@
     mediaDir = "/data/family/paperless";
     settings.PAPERLESS_ADMIN_USER = "paperless_a";
     settings.PAPERLESS_FILENAME_FORMAT = "{created_year}/{correspondent}/{title}";
+    settings.PAPERLESS_URL = "https://paperless.pc.roastlan.net";
   };
 
   services.nginx = {

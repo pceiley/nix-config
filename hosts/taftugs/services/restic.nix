@@ -8,7 +8,8 @@ let
   rcloneFile = "/persist/secrets/rclone.conf";
   localRepo = "/mnt/usb-backup/restic-purecheese";
   remoteRepo = "rclone:onedrive:restic-purecheese";
-  backupActual = "/var/lib/actual";
+  backupActual = "/var/lib/private/actual";
+  backupMealie = "/var/lib/private/mealie";
   backupTarget = "/data/family";
   backupPaperless = "/var/lib/paperless";
   backupOther = "/data/backup";
@@ -29,7 +30,7 @@ in
     localbackup = {
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget backupOther backupPaperless backupActual ];
+      paths = [ backupTarget backupOther backupPaperless backupActual backupMealie ];
       repository = localRepo;
       timerConfig = {
         OnCalendar = "01:30";
@@ -41,7 +42,7 @@ in
     remotebackup = {
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget backupOther backupPaperless backupActual ];
+      paths = [ backupTarget backupOther backupPaperless backupActual backupMealie ];
       repository = remoteRepo;
       rcloneConfigFile = rcloneFile;
       timerConfig = {
