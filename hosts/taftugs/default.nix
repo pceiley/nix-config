@@ -6,7 +6,7 @@
     ../common/users/pceiley
     ../common/users/cceiley
 
-    ../common/modules/qbittorrent.nix
+    #../common/modules/qbittorrent.nix
 
     ./services/actual.nix
     #./services/couchdb.nix
@@ -19,6 +19,7 @@
     ./services/qbittorrent.nix
     ./services/restic.nix
     ./services/samba.nix
+    ./services/search.nix
     ./services/wireguard-wg0.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
@@ -76,20 +77,20 @@
 
   # Enable ZFS email notifications
   # ref https://nixos.wiki/wiki/ZFS
-  services.zfs.zed.settings = {
-    ZED_DEBUG_LOG = "/tmp/zed.debug.log";
-    ZED_EMAIL_ADDR = [ "root" ];
-    ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
-    ZED_EMAIL_OPTS = "@ADDRESS@";
-
-    ZED_NOTIFY_INTERVAL_SECS = 3600;
-    ZED_NOTIFY_VERBOSE = true;
-
-    ZED_USE_ENCLOSURE_LEDS = true;
-    ZED_SCRUB_AFTER_RESILVER = true;
-  };
+  #services.zfs.zed.settings = {
+  #  ZED_DEBUG_LOG = "/tmp/zed.debug.log";
+  #  ZED_EMAIL_ADDR = [ "root" ];
+  #  ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
+  #  ZED_EMAIL_OPTS = "@ADDRESS@";
+#
+#    ZED_NOTIFY_INTERVAL_SECS = 3600;
+#    ZED_NOTIFY_VERBOSE = true;
+#
+#    ZED_USE_ENCLOSURE_LEDS = true;
+#    ZED_SCRUB_AFTER_RESILVER = true;
+#  };
   # this option does not work; will return error
-  services.zfs.zed.enableMail = false;
+  services.zfs.zed.enableMail = true;
 
   # Tailscale
   services.tailscale.enable = true;
@@ -100,12 +101,19 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = "admin@roastlan.net";
+
     certs."pc.roastlan.net" = {
       domain = "*.pc.roastlan.net";
       dnsProvider = "cloudflare";
       credentialsFile = "/persist/secrets/acme.txt";
       group = config.services.nginx.group;
-      #group = config.services.caddy.group;
+    };
+
+    certs."p.ceiley.net" = {
+      domain = "*.p.ceiley.net";
+      dnsProvider = "cloudflare";
+      credentialsFile = config.sops.secrets.cloudflare_credentials.path;
+      group = config.services.nginx.group;
     };
   };
 
@@ -154,4 +162,11 @@
     };
     defaultSopsFile = ../../secrets/secrets.yaml;
   };
+
+  sops.secrets.cloudflare_credentials = {
+    owner = "acme";
+    group = "acme";
+    mode = "0440";
+  };
+
 }

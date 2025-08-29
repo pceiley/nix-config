@@ -7,12 +7,23 @@
 
   nixpkgs = {
     overlays = [
-      # Make unstable nixpkgs accessible through 'pkgs.unstable'
       (final: prev: {
+
+        # Make unstable nixpkgs accessible through 'pkgs.unstable'
         unstable = import inputs.nixpkgs-unstable {
           system = final.system;
           config.allowUnfree = true;
         };
+       
+        ## Workaround to manually pin the plex version
+        #plex = prev.plex.overrideAttrs (oldAttrs: {
+        #  version = "1.42.1.10060-4e8b05daf";
+        #  src = prev.fetchurl {
+        #    url = "https://downloads.plex.tv/plex-media-server-new/1.42.1.10060-4e8b05daf/debian/plexmediaserver_1.42.1.10060-4e8b05daf_amd64.deb";
+        #    sha256 = "3a822dbc6d08a6050a959d099b30dcd96a8cb7266b94d085ecc0a750aa8197f4";
+        #  };
+        #});
+
       })
     ];
 

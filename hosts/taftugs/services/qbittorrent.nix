@@ -17,9 +17,9 @@ in
   services.qbittorrent = {
     enable = true;
     openFirewall = true;
-    dataDir = "/srv/qbittorrent";
+    profileDir = "/srv/qbittorrent";
     #package = pkgs.unstable.qbittorrent-nox;
-    port = 58080;
+    webuiPort = 58080;
   };
 
   # Allow qbittorrent to save files in the multimedia share
