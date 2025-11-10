@@ -78,7 +78,7 @@
 
   # Environment
   environment = {
-    systemPackages = with pkgs; [
+    systemPackages = (with pkgs; [
       age
       bottom
       dig
@@ -92,8 +92,12 @@
       unzip
       vim
       wget
+      yazi
       zellij
-    ];
+    ]) ++ (with pkgs.unstable; [
+      yt-dlp
+    ]);
+
     variables = {
       EDITOR = "vim";
       SYSTEMD_EDITOR = "vim";
@@ -101,9 +105,9 @@
     };
   };
 
-  # Fish Shell
   programs = {
     command-not-found.enable = false;
+
     fish = {
       enable = true;
       shellAbbrs = {
@@ -118,6 +122,16 @@
         wttr-bas = "curl -s wttr.in/basingstoke && curl -s v2.wttr.in/basingstoke";
       };
     };
+    zsh = {
+      enable = true;
+      shellAliases = {
+        moon = "curl -s wttr.in/Moon";
+        pubip = "curl -s ifconfig.me/ip";
+        wttr = "curl -s wttr.in && curl -s v2.wttr.in";
+        wttr-bas = "curl -s wttr.in/basingstoke && curl -s v2.wttr.in/basingstoke";
+      };
+    };
+
   };
 
 }

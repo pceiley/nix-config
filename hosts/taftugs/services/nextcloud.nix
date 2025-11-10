@@ -5,13 +5,12 @@
 
 { pkgs, config, ... }:
 let
-  address = "cloud.pc.roastlan.net";
+  address = "cloud.p.ceiley.net";
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
 {
   services.nextcloud = {
     enable = true;
-    #hostName = "cloud.pc.roastlan.net";
     hostName = "${address}";
     
     # Need to manually increment with every major upgrade.
@@ -62,10 +61,10 @@ in
   users.users.nextcloud.extraGroups = ifTheyExist [ "family" ];
 
   services.nginx = {
-    virtualHosts."cloud.pc.roastlan.net" =  {
-      #serverAliases = [ "cloud.pc.roastlan.net" ];
+    virtualHosts."cloud.p.ceiley.net" =  {
+      #serverAliases = [ "cloud.p.ceiley.net" ];
       forceSSL = true;
-      useACMEHost = "pc.roastlan.net";
+      useACMEHost = "p.ceiley.net";
     };
   };
 

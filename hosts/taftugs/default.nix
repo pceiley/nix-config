@@ -12,14 +12,15 @@
     #./services/couchdb.nix
     ./services/jellyfin.nix
     ./services/mealie.nix
-    ./services/nextcloud.nix
+    #./services/nextcloud.nix
     ./services/nginx.nix
     ./services/paperless.nix
-    ./services/plex.nix
+    #./services/plex.nix
     ./services/qbittorrent.nix
     ./services/restic.nix
+    ./services/sabnzbd.nix
     ./services/samba.nix
-    ./services/search.nix
+    #./services/search.nix
     ./services/wireguard-wg0.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
@@ -91,23 +92,21 @@
 #  };
   # this option does not work; will return error
   services.zfs.zed.enableMail = true;
+  services.zfs.zed.settings = {
+    ZED_EMAIL_ADDR = [ "root" ];
+    ZED_NOTIFY_VERBOSE = true;
+  };
 
   # Tailscale
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";
+  #services.tailscale.package = pkgs.unstable.tailscale;
 
   # ACME
-  # LetsEncrypt wildcard certificate for *.pc.roastlan.net
+  # LetsEncrypt wildcard certificate for *.p.ceiley.net
   security.acme = {
     acceptTerms = true;
-    defaults.email = "admin@roastlan.net";
-
-    certs."pc.roastlan.net" = {
-      domain = "*.pc.roastlan.net";
-      dnsProvider = "cloudflare";
-      credentialsFile = "/persist/secrets/acme.txt";
-      group = config.services.nginx.group;
-    };
+    defaults.email = "admin@ceiley.net";
 
     certs."p.ceiley.net" = {
       domain = "*.p.ceiley.net";

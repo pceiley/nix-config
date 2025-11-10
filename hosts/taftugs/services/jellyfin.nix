@@ -3,7 +3,7 @@
 { pkgs, config, ... }:
 
 let 
-  address = "jellyfin.pc.roastlan.net";
+  address = "jellyfin.p.ceiley.net";
 in
 {
   hardware.graphics = {
@@ -21,11 +21,18 @@ in
   };
 
   services.nginx = {
-    virtualHosts."jellyfin.pc.roastlan.net" =  {
+    virtualHosts."jellyfin.p.ceiley.net" =  {
       forceSSL = true;
-      useACMEHost = "pc.roastlan.net";
+      useACMEHost = "p.ceiley.net";
       locations."/" = {
         proxyPass = "http://localhost:8096";
+        proxyWebsockets = true;
+        extraConfig =
+          # required when the target is also TLS server with multiple hosts
+          "proxy_ssl_server_name on;" +
+          # required when the server wants to use HTTP Authentication
+          "proxy_pass_header Authorization;"
+          ;
       };
     };
   };

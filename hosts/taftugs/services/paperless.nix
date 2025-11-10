@@ -9,13 +9,13 @@
     mediaDir = "/data/family/paperless";
     settings.PAPERLESS_ADMIN_USER = "paperless_a";
     settings.PAPERLESS_FILENAME_FORMAT = "{created_year}/{correspondent}/{title}";
-    settings.PAPERLESS_URL = "https://paperless.pc.roastlan.net";
+    settings.PAPERLESS_URL = "https://paperless.p.ceiley.net";
   };
 
   services.nginx = {
-    virtualHosts."paperless.pc.roastlan.net" =  {
+    virtualHosts."paperless.p.ceiley.net" =  {
       forceSSL = true;
-      useACMEHost = "pc.roastlan.net";
+      useACMEHost = "p.ceiley.net";
       locations."/" = {
         proxyPass = "http://${config.services.paperless.address}:${toString config.services.paperless.port}";
       };
