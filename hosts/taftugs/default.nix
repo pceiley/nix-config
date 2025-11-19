@@ -78,19 +78,6 @@
 
   # Enable ZFS email notifications
   # ref https://nixos.wiki/wiki/ZFS
-  #services.zfs.zed.settings = {
-  #  ZED_DEBUG_LOG = "/tmp/zed.debug.log";
-  #  ZED_EMAIL_ADDR = [ "root" ];
-  #  ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
-  #  ZED_EMAIL_OPTS = "@ADDRESS@";
-#
-#    ZED_NOTIFY_INTERVAL_SECS = 3600;
-#    ZED_NOTIFY_VERBOSE = true;
-#
-#    ZED_USE_ENCLOSURE_LEDS = true;
-#    ZED_SCRUB_AFTER_RESILVER = true;
-#  };
-  # this option does not work; will return error
   services.zfs.zed.enableMail = true;
   services.zfs.zed.settings = {
     ZED_EMAIL_ADDR = [ "root" ];
@@ -148,6 +135,15 @@
   system.stateVersion = "22.05";
   
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  #https://wiki.nixos.org/wiki/Accelerated_Video_Playback
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # For Broadwell (2014) or newer processors. LIBVA_DRIVER_NAME=iHD
+    ];
+  };
+  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
 
   # https://github.com/Mic92/sops-nix?tab=readme-ov-file#deploy-example
   sops = {

@@ -6,13 +6,8 @@ let
   address = "jellyfin.p.ceiley.net";
 in
 {
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver
-      intel-compute-runtime
-    ];
-  };
+
+  systemd.services.jellyfin.environment.LIBVA_DRIVER_NAME = "iHD";
 
   services.jellyfin = {
     enable = true;
