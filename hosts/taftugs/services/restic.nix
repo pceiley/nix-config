@@ -9,6 +9,7 @@ let
   localRepo = "/mnt/usb-backup/restic-purecheese";
   remoteRepo = "rclone:onedrive:restic-purecheese";
   backupActual = "/var/lib/private/actual";
+  backupImmich = "/data/immich";
   backupMealie = "/var/lib/private/mealie";
   backupTarget = "/data/family";
   backupPaperless = "/var/lib/paperless";
@@ -30,7 +31,7 @@ in
     localbackup = {
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget backupOther backupPaperless backupActual backupMealie ];
+      paths = [ backupTarget backupOther backupPaperless backupActual backupImmich backupMealie ];
       repository = localRepo;
       timerConfig = {
         OnCalendar = "01:30";
@@ -58,5 +59,3 @@ in
     restic_remote_env = "sudo RCLONE_CONFIG=${rcloneFile} RESTIC_REPOSITORY=${remoteRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";
   };
 }
-
-

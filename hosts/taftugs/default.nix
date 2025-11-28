@@ -2,14 +2,13 @@
 { inputs, lib, pkgs, config, ... }: {
   imports = [
     ../common
-
     ../common/users/pceiley
     ../common/users/cceiley
-
     #../common/modules/qbittorrent.nix
 
     ./services/actual.nix
     #./services/couchdb.nix
+    ./services/immich.nix
     ./services/jellyfin.nix
     ./services/mealie.nix
     #./services/nextcloud.nix
@@ -32,7 +31,7 @@
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "uas" "sd_mod" ];
     kernelModules = [ "kvm-intel" ];
-    
+
     supportedFilesystems = [ "zfs" ];
     zfs.forceImportRoot = false;
     zfs.extraPools = [ "data" ];
@@ -56,7 +55,7 @@
     { device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
-  
+
   #swapDevices = [{
   #  device = "/swap";
   #  size = 2048;
@@ -101,6 +100,13 @@
       credentialsFile = config.sops.secrets.cloudflare_credentials.path;
       group = config.services.nginx.group;
     };
+
+    certs."photos.ceiley.com" = {
+      domain = "photos.ceiley.com";
+      dnsProvider = "cloudflare";
+      credentialsFile = config.sops.secrets.cloudflare_credentials.path;
+      group = config.services.nginx.group;
+    };
   };
 
   networking = {
@@ -133,7 +139,7 @@
   };
 
   system.stateVersion = "22.05";
-  
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   #https://wiki.nixos.org/wiki/Accelerated_Video_Playback
