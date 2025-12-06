@@ -37,4 +37,27 @@
       };
     };
   };
+
+  # Immich public proxy
+  services.immich-public-proxy = {
+    enable = true;
+    immichUrl = "http://[::1]:${toString config.services.immich.port}";
+    port = 12284;
+    package = pkgs.unstable.immich-public-proxy;
+  };
+
+  # cloudflared tunnel for share.photos.ceiley.net
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      "af7b437f-57a3-4151-8345-7f8fa86fc79d" = {
+        credentialsFile = "${config.sops.secrets.cloudflared_credentials.path}";
+        default = "http_status:404";
+      };
+    };
+  };
+
+  sops.secrets.cloudflared_credentials = {
+    #owner = config.users.users.cloudflared.name;
+  };
 }
