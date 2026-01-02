@@ -85,6 +85,7 @@
       git
       htop
       micro
+      nh
       podman
       restic
       screen

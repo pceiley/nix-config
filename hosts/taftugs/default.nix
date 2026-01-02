@@ -4,8 +4,8 @@
     ../common
     ../common/users/pceiley
     ../common/users/cceiley
-    #../common/modules/qbittorrent.nix
 
+    # Services
     ./services/actual.nix
     #./services/couchdb.nix
     ./services/immich.nix
@@ -14,6 +14,7 @@
     #./services/nextcloud.nix
     ./services/nginx.nix
     ./services/paperless.nix
+    ./services/postgresql.nix
     #./services/plex.nix
     ./services/qbittorrent.nix
     ./services/restic.nix

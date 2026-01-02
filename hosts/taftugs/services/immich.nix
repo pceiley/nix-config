@@ -6,6 +6,10 @@
   services.immich = {
     accelerationDevices = [ "/dev/dri/renderD128" ];
     enable = true;
+    # https://nixos.org/manual/nixos/stable/#module-services-immich-vectorchord-migration
+    database.enableVectorChord = true;
+    database.enableVectors = false;
+
     mediaLocation = "/data/immich";
     port = 12283;
     host = "localhost";
