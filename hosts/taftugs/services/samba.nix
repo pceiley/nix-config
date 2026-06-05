@@ -39,6 +39,13 @@
         "directory mask" = "2770";
         #"force user" = "pceiley";
         "force group" = "family";
+
+        # macOS compatibility:
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:aapl" = "yes";
+        "fruit:metadata" = "stream";
+        "fruit:resource" = "stream";
+        "fruit:encoding" = "native";
       };
 
       multimedia = {
@@ -50,6 +57,13 @@
         "directory mask" = "2775";
         #"force user" = "pceiley";
         "force group" = "multimedia";
+
+        # macOS compatibility:
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:aapl" = "yes";
+        "fruit:metadata" = "stream";
+        "fruit:resource" = "stream";
+        "fruit:encoding" = "native";
       };
     };
   };

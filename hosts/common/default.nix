@@ -14,7 +14,7 @@
           system = final.system;
           config.allowUnfree = true;
         };
-       
+
         ## Workaround to manually pin the plex version
         #plex = prev.plex.overrideAttrs (oldAttrs: {
         #  version = "1.42.1.10060-4e8b05daf";
@@ -36,13 +36,13 @@
   hardware.enableRedistributableFirmware = true;
 
   # Locale
-  time.timeZone = "Australia/Sydney";                                       
+  time.timeZone = "Australia/Sydney";
   i18n.defaultLocale = "en_AU.UTF-8";
 
-  # Console                                       
-  console = {                                                               
-    font = "Lat2-Terminus16";                                               
-    keyMap = "us";                                                          
+  # Console
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
   };
 
   # Nix
@@ -84,12 +84,14 @@
       dig
       git
       htop
+      just
       micro
       nh
       podman
       restic
       screen
       sops
+      tldr
       unzip
       vim
       wget

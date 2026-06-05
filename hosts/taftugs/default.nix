@@ -32,6 +32,8 @@
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "uas" "sd_mod" ];
     kernelModules = [ "kvm-intel" ];
+    # Required for low power encoding
+    kernelParams = [ "i915.enable_guc=2" ];
 
     supportedFilesystems = [ "zfs" ];
     zfs.forceImportRoot = false;
@@ -95,6 +97,13 @@
     acceptTerms = true;
     defaults.email = "admin@ceiley.net";
 
+    certs."taftugs.com" = {
+      domain = "*.taftugs.com";
+      dnsProvider = "cloudflare";
+      credentialsFile = config.sops.secrets.cloudflare_credentials.path;
+      group = config.services.nginx.group;
+    };
+
     certs."p.ceiley.net" = {
       domain = "*.p.ceiley.net";
       dnsProvider = "cloudflare";
@@ -147,6 +156,7 @@
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
+      intel-ocl # Generic OpenCL support
       intel-media-driver # For Broadwell (2014) or newer processors. LIBVA_DRIVER_NAME=iHD
     ];
   };
