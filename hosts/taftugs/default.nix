@@ -100,21 +100,21 @@
     certs."taftugs.com" = {
       domain = "*.taftugs.com";
       dnsProvider = "cloudflare";
-      credentialsFile = config.sops.secrets.cloudflare_credentials.path;
+      environmentFile = config.sops.secrets.cloudflare_credentials.path;
       group = config.services.nginx.group;
     };
 
     certs."p.ceiley.net" = {
       domain = "*.p.ceiley.net";
       dnsProvider = "cloudflare";
-      credentialsFile = config.sops.secrets.cloudflare_credentials.path;
+      environmentFile = config.sops.secrets.cloudflare_credentials.path;
       group = config.services.nginx.group;
     };
 
     certs."photos.ceiley.com" = {
       domain = "photos.ceiley.com";
       dnsProvider = "cloudflare";
-      credentialsFile = config.sops.secrets.cloudflare_credentials.path;
+      environmentFile = config.sops.secrets.cloudflare_credentials.path;
       group = config.services.nginx.group;
     };
   };

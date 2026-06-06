@@ -7,8 +7,8 @@
     accelerationDevices = [ "/dev/dri/renderD128" ];
     enable = true;
     # https://nixos.org/manual/nixos/stable/#module-services-immich-vectorchord-migration
-    database.enableVectorChord = true;
-    database.enableVectors = false;
+    #database.enableVectorChord = true;
+    #database.enableVectors = false;
 
     mediaLocation = "/data/immich";
     port = 12283;
@@ -19,7 +19,7 @@
       environment = {
         # https://github.com/nixos/nixpkgs/issues/418799
         HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
-        MPLCONFIGDIR = "/var/cache/immich/matplotlib";
+        #MPLCONFIGDIR = "/var/cache/immich/matplotlib";
       };
     };
   };
