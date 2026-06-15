@@ -2,8 +2,8 @@
 
 { pkgs, config, ... }:
 
-let 
-  address = "jellyfin.p.ceiley.net";
+let
+  address = "jellyfin.roastlan.net";
 in
 {
 
@@ -16,9 +16,9 @@ in
   };
 
   services.nginx = {
-    virtualHosts."jellyfin.p.ceiley.net" =  {
+    virtualHosts."jellyfin.roastlan.net" =  {
       forceSSL = true;
-      useACMEHost = "p.ceiley.net";
+      useACMEHost = "roastlan.net";
       locations."/" = {
         proxyPass = "http://localhost:8096";
         proxyWebsockets = true;

@@ -11,9 +11,9 @@
   };
 
   services.nginx = {
-    virtualHosts."mealie.p.ceiley.net" =  {
+    virtualHosts."mealie.roastlan.net" =  {
       forceSSL = true;
-      useACMEHost = "p.ceiley.net";
+      useACMEHost = "roastlan.net";
       locations."/" = {
         proxyPass = "http://${config.services.mealie.listenAddress}:${toString config.services.mealie.port}";
       };

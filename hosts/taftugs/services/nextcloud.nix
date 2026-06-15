@@ -5,14 +5,14 @@
 
 { pkgs, config, ... }:
 let
-  address = "cloud.p.ceiley.net";
+  address = "cloud.roastlan.net";
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
 {
   services.nextcloud = {
     enable = true;
     hostName = "${address}";
-    
+
     # Need to manually increment with every major upgrade.
     package = pkgs.nextcloud31;
 
@@ -48,7 +48,7 @@ in
       default_phone_region = "AU";
       "localstorage.umask" = "0007";
     };
-   
+
     config = {
       dbtype = "pgsql";
       adminuser = "pc_admin";
@@ -61,10 +61,10 @@ in
   users.users.nextcloud.extraGroups = ifTheyExist [ "family" ];
 
   services.nginx = {
-    virtualHosts."cloud.p.ceiley.net" =  {
-      #serverAliases = [ "cloud.p.ceiley.net" ];
+    virtualHosts."cloud.roastlan.net" =  {
+      #serverAliases = [ "cloud.roastlan.net" ];
       forceSSL = true;
-      useACMEHost = "p.ceiley.net";
+      useACMEHost = "roastlan.net";
     };
   };
 

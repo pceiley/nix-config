@@ -17,9 +17,9 @@
   };
 
   services.nginx = {
-    virtualHosts."budget.p.ceiley.net" =  {
+    virtualHosts."budget.roastlan.net" =  {
       forceSSL = true;
-      useACMEHost = "p.ceiley.net";
+      useACMEHost = "roastlan.net";
       locations."/" = {
         proxyPass = "http://${config.services.actual.settings.hostname}:${toString config.services.actual.settings.port}";
       };

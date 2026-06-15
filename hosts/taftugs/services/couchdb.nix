@@ -2,7 +2,7 @@
 #
 # https://github.com/vrtmrz/obsidian-livesync/blob/main/docs/setup_own_server.md#setup-a-couchdb-server
 #
-# 
+#
 
 { pkgs, config, ... }:
 
@@ -16,9 +16,9 @@
   };
 
   services.nginx = {
-    virtualHosts."couchdb.p.ceiley.net" =  {
+    virtualHosts."couchdb.roastlan.net" =  {
       forceSSL = true;
-      useACMEHost = "p.ceiley.net";
+      useACMEHost = "roastlan.net";
       locations."/" = {
         proxyPass = "http://${config.services.couchdb.bindAddress}:${toString config.services.couchdb.port}";
         extraConfig =

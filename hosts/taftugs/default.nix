@@ -8,7 +8,7 @@
     # Services
     ./services/actual.nix
     #./services/couchdb.nix
-    ./services/immich.nix
+    #./services/immich.nix
     ./services/jellyfin.nix
     ./services/mealie.nix
     #./services/nextcloud.nix
@@ -87,36 +87,36 @@
   };
 
   # Tailscale
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "server";
+  #services.tailscale.enable = true;
+  #services.tailscale.useRoutingFeatures = "server";
   #services.tailscale.package = pkgs.unstable.tailscale;
 
   # ACME
-  # LetsEncrypt wildcard certificate for *.p.ceiley.net
+  # LetsEncrypt certificates
   security.acme = {
     acceptTerms = true;
-    defaults.email = "admin@ceiley.net";
+    defaults.email = "admin@roastlan.net";
 
-    certs."taftugs.com" = {
-      domain = "*.taftugs.com";
+    certs."roastlan.net" = {
+      domain = "*.roastlan.net";
       dnsProvider = "cloudflare";
       environmentFile = config.sops.secrets.cloudflare_credentials.path;
       group = config.services.nginx.group;
     };
 
-    certs."p.ceiley.net" = {
-      domain = "*.p.ceiley.net";
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets.cloudflare_credentials.path;
-      group = config.services.nginx.group;
-    };
+    # certs."p.ceiley.net" = {
+    #   domain = "*.p.ceiley.net";
+    #   dnsProvider = "cloudflare";
+    #   environmentFile = config.sops.secrets.cloudflare_credentials.path;
+    #   group = config.services.nginx.group;
+    # };
 
-    certs."photos.ceiley.com" = {
-      domain = "photos.ceiley.com";
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets.cloudflare_credentials.path;
-      group = config.services.nginx.group;
-    };
+    # certs."photos.ceiley.com" = {
+    #   domain = "photos.ceiley.com";
+    #   dnsProvider = "cloudflare";
+    #   environmentFile = config.sops.secrets.cloudflare_credentials.path;
+    #   group = config.services.nginx.group;
+    # };
   };
 
   networking = {

@@ -1,8 +1,8 @@
 # FreshRSS
 
 { pkgs, config, ... }:
-let 
-  address = "rss.p.ceiley.net";
+let
+  address = "rss.roastlan.net";
 in
 {
   services.freshrss = {
@@ -17,7 +17,7 @@ in
   services.nginx = {
     virtualHosts."${address}" = {
       forceSSL = true;
-      useACMEHost = "p.ceiley.net";
+      useACMEHost = "roastlan.net";
     };
   };
 }
