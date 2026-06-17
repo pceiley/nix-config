@@ -1,0 +1,75 @@
+#cloud-config
+# Cloud-init seed for the UniFi OS Server guest VM (Ubuntu 26.04 LTS).
+
+hostname: halloumi
+fqdn: halloumi.srv.roastlan.net
+manage_etc_hosts: true
+
+users:
+  - name: pceiley
+    groups: [adm, sudo]
+    shell: /usr/bin/bash
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA/IHOQ9Cn1nWx/N8N77MI7Mf+8Tp2vhgQ8i7xBMm6tx
+
+# Disable the default "ubuntu" user's password login but keep cloud-init happy
+ssh_pwauth: false
+disable_root: true
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - sudo
+  - podman
+  - uidmap
+  - slirp4netns
+  - iptables
+  - curl
+  - wget
+  - ca-certificates
+  - qemu-guest-agent
+  - unattended-upgrades
+  - update-notifier-common   # provides /var/run reboot-required signalling
+
+write_files:
+  - path: /etc/motd
+    content: |
+
+      UniFi OS Server guest - base image ready.
+
+      Podman + dependencies are installed. To install UniFi OS Server itself:
+        1. Grab the latest "UniFi OS Server for Linux (x64)" download link from
+          https://ui.com/download/software/unifi-os-server
+        2. wget <link> -O unifi-os-server-installer
+        3. chmod +x unifi-os-server-installer
+        4. sudo ./unifi-os-server-installer
+        5. Open https://<this-vm-ip>:11443 to finish setup
+
+  # Turn on the periodic unattended-upgrades timers. The distro-shipped
+  # /etc/apt/apt.conf.d/50unattended-upgrades already allows the -security
+  # pocket by default, so this just enables the daily run + autoclean.
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::AutocleanInterval "7";
+
+  # Local overrides, kept in a separate high-numbered file so distro
+  # upgrades of 50unattended-upgrades don't clobber them. Security-only
+  # (the default origins), with an automatic reboot window at 04:00 - the
+  # UniFi devices keep forwarding traffic while the controller restarts, so
+  # an early-morning reboot is low impact. Set Automatic-Reboot to "false"
+  # if you'd rather reboot by hand.
+  - path: /etc/apt/apt.conf.d/52unattended-upgrades-local
+    content: |
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+      Unattended-Upgrade::Automatic-Reboot "true";
+      Unattended-Upgrade::Automatic-Reboot-Time "04:00";
+
+runcmd:
+  - systemctl enable --now qemu-guest-agent
+  - systemctl enable --now unattended-upgrades
+
+final_message: "UniFi OS Server base VM is ready after $UPTIME seconds"

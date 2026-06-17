@@ -7,7 +7,8 @@
     ../common/users/cceiley
 
     #./services/container-unifi.nix
-    ./services/unifi.nix
+    #./services/unifi.nix
+    ./services/virtualisation.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
@@ -18,7 +19,7 @@
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "uas" "sd_mod" ];
     kernelModules = [ "kvm-intel" ];
-    
+
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 10;
@@ -38,7 +39,7 @@
     { device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
-  
+
   swapDevices = [{
     device = "/swap";
     size = 32*1024;
@@ -55,22 +56,25 @@
 
   systemd.network.enable = true;
 
-  systemd.network.networks."10-eno1" = {
-    matchConfig.Name = "eno1";
-    networkConfig = {
-      IPv6AcceptRA = true;
-    };
-    address = [ "192.168.5.5/24" ];
-    gateway = [ "192.168.5.254" ];
-    dns = [ "192.168.5.254" ];
+  #
+  # This is now handled by the bridge configured in services/virtualisation.nix
+  #
+  # systemd.network.networks."10-eno1" = {
+  #   matchConfig.Name = "eno1";
+  #   networkConfig = {
+  #     IPv6AcceptRA = true;
+  #   };
+  #   address = [ "192.168.5.5/24" ];
+  #   gateway = [ "192.168.5.254" ];
+  #   dns = [ "192.168.5.254" ];
 
-    # make the routes on this interface a dependency for network-online.target
-    linkConfig.RequiredForOnline = "routable";
-  };
+  #   # make the routes on this interface a dependency for network-online.target
+  #   linkConfig.RequiredForOnline = "routable";
+  # };
 
 
   system.stateVersion = "23.11";
-  
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # https://github.com/Mic92/sops-nix?tab=readme-ov-file#deploy-example
