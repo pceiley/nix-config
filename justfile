@@ -98,3 +98,12 @@ vpn-check namespace="mullvad":
       echo "  ✗ NOT confined as expected — do not trust the tunnel until resolved"
       exit 1
     fi
+
+    # Show Mullvad VPN connection stats (wg + exit server)
+vpn-stats namespace="mullvad":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ns="{{ namespace }}"
+    sudo ip netns exec "$ns" wg show
+    echo
+    sudo ip netns exec "$ns" curl -s https://am.i.mullvad.net/connected || true
