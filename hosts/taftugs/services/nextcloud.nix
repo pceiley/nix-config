@@ -52,7 +52,6 @@ in
     config = {
       dbtype = "pgsql";
       adminuser = "pc_admin";
-      #adminpassFile = "/persist/secrets/nextcloud-admin-pass.txt";
       adminpassFile = config.sops.secrets.nextcloud_admin_password.path;
     };
 

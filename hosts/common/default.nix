@@ -91,6 +91,7 @@
       restic
       screen
       sops
+      ssh-to-age
       tldr
       unzip
       vim

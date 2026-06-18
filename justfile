@@ -75,6 +75,15 @@ boot-host hostname=current_hostname:
       echo "Unsupported OS: $(uname)"
     fi
 
+# Edit a sops file using THIS host's key (no user key needed on the box)
+sops-edit file="secrets/secrets.yaml":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    key="$(mktemp /dev/shm/hostage.XXXXXX)"
+    trap 'rm -f "$key"' EXIT
+    sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key > "$key"
+    SOPS_AGE_KEY_FILE="$key" TMPDIR=/dev/shm sops "{{ file }}" || test $? -eq 200
+
 # Verify Mullvad VPN namespace confinement (netns egress vs host egress)
 vpn-check namespace="mullvad":
     #!/usr/bin/env bash
@@ -99,7 +108,7 @@ vpn-check namespace="mullvad":
       exit 1
     fi
 
-    # Show Mullvad VPN connection stats (wg + exit server)
+# Show Mullvad VPN connection stats (wg + exit server)
 vpn-stats namespace="mullvad":
     #!/usr/bin/env bash
     set -euo pipefail
