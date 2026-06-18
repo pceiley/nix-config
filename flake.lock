@@ -84,7 +84,8 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "vpn-confinement": "vpn-confinement"
       }
     },
     "sops-nix": {
@@ -102,6 +103,21 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "vpn-confinement": {
+      "locked": {
+        "lastModified": 1778182451,
+        "narHash": "sha256-Bz3n2THDGf90Z9gMqhH/J492prYH8B6RFRlxv/fPBwc=",
+        "owner": "Maroka-chan",
+        "repo": "VPN-Confinement",
+        "rev": "cf5bfc4c3559f2e783698b1aa23c165072039a7d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Maroka-chan",
+        "repo": "VPN-Confinement",
         "type": "github"
       }
     }

@@ -74,3 +74,27 @@ boot-host hostname=current_hostname:
     else
       echo "Unsupported OS: $(uname)"
     fi
+
+# Verify Mullvad VPN namespace confinement (netns egress vs host egress)
+vpn-check namespace="mullvad":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ns="{{ namespace }}"
+    if ! ip netns list | grep -qw "$ns"; then
+      echo "✗ namespace '$ns' not found — is ${ns}.service up?"
+      exit 1
+    fi
+    echo "Mullvad 󰖂 Confinement check (namespace '$ns')"
+    host_ip="$(curl -fsS --max-time 10 https://am.i.mullvad.net/ip || echo '?')"
+    ns_ip="$(sudo ip netns exec "$ns" curl -fsS --max-time 10 https://am.i.mullvad.net/ip || echo '?')"
+    ns_conn="$(sudo ip netns exec "$ns" curl -fsS --max-time 10 https://am.i.mullvad.net/connected || true)"
+    echo "  host egress IP : $host_ip"
+    echo "  netns egress IP: $ns_ip"
+    echo "  netns status   : $ns_conn"
+    if echo "$ns_conn" | grep -qi "You are connected to Mullvad" \
+       && [ "$ns_ip" != "$host_ip" ] && [ "$ns_ip" != "?" ]; then
+      echo "  ✓ confined: '$ns' exits via Mullvad and differs from the host"
+    else
+      echo "  ✗ NOT confined as expected — do not trust the tunnel until resolved"
+      exit 1
+    fi

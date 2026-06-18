@@ -12,6 +12,8 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     sops-nix.url = "github:Mic92/sops-nix";
+
+    vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, ... }@inputs: {

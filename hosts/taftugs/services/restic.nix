@@ -4,8 +4,8 @@
 { config, ... }:
 
 let
-  secretsFile = "/persist/secrets/restic.txt";
-  rcloneFile = "/persist/secrets/rclone.conf";
+  secretsFile = config.sops.secrets.restic_password.path;
+  rcloneFile = config.sops.secrets.rclone_conf.path;
   localRepo = "/mnt/usb-backup/restic-purecheese";
   remoteRepo = "rclone:onedrive:restic-purecheese";
   backupActual = "/var/lib/private/actual";
@@ -58,4 +58,8 @@ in
     restic_local_env = "sudo RESTIC_REPOSITORY=${localRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";
     restic_remote_env = "sudo RCLONE_CONFIG=${rcloneFile} RESTIC_REPOSITORY=${remoteRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";
   };
+
+  # restic backups run as root, so the default sops owner/mode (root:root 0400) is fine.
+  sops.secrets.restic_password = { };
+  sops.secrets.rclone_conf = { };
 }

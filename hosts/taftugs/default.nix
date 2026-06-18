@@ -21,12 +21,13 @@
     ./services/sabnzbd.nix
     ./services/samba.nix
     #./services/search.nix
-    ./services/wireguard-wg0.nix
+    ./services/mullvad-vpn.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.sops-nix.nixosModules.sops
+    inputs.vpn-confinement.nixosModules.default
   ];
 
   boot = {

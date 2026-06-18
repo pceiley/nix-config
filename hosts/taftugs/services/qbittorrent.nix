@@ -16,10 +16,19 @@ in
 {
   services.qbittorrent = {
     enable = true;
-    openFirewall = true;
+    # WebUI is exposed via the VPN namespace portMappings + accessibleFrom,
+    # not via the host firewall (qBittorrent no longer listens on the host).
+    openFirewall = false;
     profileDir = "/srv/qbittorrent";
     #package = pkgs.unstable.qbittorrent-nox;
     webuiPort = 58080;
+  };
+
+  # Run qBittorrent inside the Mullvad VPN network namespace (all its traffic
+  # egresses through wireguard; nothing else on the host is affected).
+  systemd.services.qbittorrent.vpnConfinement = {
+    enable = true;
+    vpnNamespace = "mullvad";
   };
 
   # Allow qbittorrent to save files in the multimedia share
