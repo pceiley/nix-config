@@ -4,10 +4,10 @@
     ../common
     ../common/users/pceiley
     ../common/users/cceiley
+    ../common/modules/monitoring-exporters.nix
 
     # Services
     ./services/actual.nix
-    #./services/couchdb.nix
     #./services/immich.nix
     ./services/jellyfin.nix
     ./services/mealie.nix
@@ -92,45 +92,13 @@
   #services.tailscale.useRoutingFeatures = "server";
   #services.tailscale.package = pkgs.unstable.tailscale;
 
-  # ACME
-  # LetsEncrypt certificates
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "admin@roastlan.net";
-
-    certs."roastlan.net" = {
-      domain = "*.roastlan.net";
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets.cloudflare_credentials.path;
-      group = config.services.nginx.group;
-    };
-
-    # certs."p.ceiley.net" = {
-    #   domain = "*.p.ceiley.net";
-    #   dnsProvider = "cloudflare";
-    #   environmentFile = config.sops.secrets.cloudflare_credentials.path;
-    #   group = config.services.nginx.group;
-    # };
-
-    # certs."photos.ceiley.com" = {
-    #   domain = "photos.ceiley.com";
-    #   dnsProvider = "cloudflare";
-    #   environmentFile = config.sops.secrets.cloudflare_credentials.path;
-    #   group = config.services.nginx.group;
-    # };
   };
 
   networking = {
     hostName = "taftugs";
     hostId = "8ec040f1";
-    # Should use systemd.network over networking.interfaces as better supported
-    # as per https://nixos.wiki/wiki/Systemd-networkd
-    #defaultGateway = "192.168.10.254";
-    #interfaces.eno1.ipv4.addresses = [{
-    #  address = "192.168.10.3";
-    #  prefixLength = 24;
-    #}];
-    #nameservers = [ "192.168.10.254" ];
+    # nftables backend, for the source-scoped exporter rule (VPN-Confinement coexists).
+    nftables.enable = true;
     useDHCP = lib.mkForce false;
   };
 
@@ -174,12 +142,6 @@
       generateKey = true;
     };
     defaultSopsFile = ../../secrets/secrets.yaml;
-  };
-
-  sops.secrets.cloudflare_credentials = {
-    owner = "acme";
-    group = "acme";
-    mode = "0440";
   };
 
 }

@@ -1,6 +1,7 @@
 # This file (and the global directory) holds config that i use on all hosts
 { inputs, outputs, pkgs, lib, ... }: {
   imports = [
+    ./acme.nix
     ./openssh.nix
     ./smtp.nix
   ];

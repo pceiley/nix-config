@@ -1,13 +1,12 @@
 # SMTP setup
-
 { config, ... }:
 
 {
   environment.etc = {
     "aliases" = {
       text = ''
-        root: pgceiley@gmail.com
-        pceiley: pgceiley@gmail.com
+        root: peter@ceiley.com
+        pceiley: peter@ceiley.com
       '';
       mode = "0644";
     };
@@ -18,11 +17,13 @@
     extraConfig = ''
       account default
       auth on
-      eval echo -n 'from ' && cat ${config.sops.secrets."msmtp/email".path}
-      eval echo -n 'user ' && cat ${config.sops.secrets."msmtp/email".path}
-      eval echo -n 'host ' && cat ${config.sops.secrets."msmtp/host".path}
-      passwordeval cat ${config.sops.secrets."msmtp/password".path}
+      from alerts@ceiley.com
+      user peter@ceiley.com
+      eval echo -n 'host ' && cat ${config.sops.secrets."smtp/host".path}
+      passwordeval cat ${config.sops.secrets."smtp/password".path}
       tls on
+      tls_starttls off
+      port 465
     '';
 
     defaults = {
@@ -31,15 +32,11 @@
   };
 
   sops.secrets = {
-    "msmtp/email" = {
+    "smtp/host" = {
       mode = "0440";
       group = config.users.groups.wheel.name;
     };
-    "msmtp/host" = {
-      mode = "0440";
-      group = config.users.groups.wheel.name;
-    };
-    "msmtp/password" = {
+    "smtp/password" = {
       mode = "0440";
       group = config.users.groups.wheel.name;
     };

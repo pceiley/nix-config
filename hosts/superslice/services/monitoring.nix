@@ -2,17 +2,17 @@
 # grafana (:3000), all bound to localhost and reverse-proxied with TLS at
 # {grafana,prometheus,alertmanager}.roastlan.net. prometheus/alertmanager have
 # no auth, so keep them LAN-only. Needs DNS A records for those three names ->
-# 192.168.5.5 and the grafana_admin_password / alertmanager_smtp_password
-# secrets (see bottom of file).
+# 192.168.5.5 and the grafana_admin_password secrets.
 
 { config, pkgs, ... }:
 
 let
-  # Alertmanager dials SMTP itself, so it reuses the Gmail relay rather than the
-  # msmtp binary. Match these to secrets/secrets.yaml -> msmtp/*.
-  smtpSmarthost = "smtp.gmail.com:587";
-  smtpUser      = "pgceiley@gmail.com";
-  alertTo       = "pgceiley@gmail.com";
+  # Alertmanager dials SMTP itself, so it reuses the email provider relay rather
+  # than the msmtp binary.
+  smtpSmarthost = "smtp.fastmail.com:587";
+  smtpFrom      = "alerts@ceiley.com";
+  smtpLogin     = "peter@ceiley.com";
+  alertTo       = "peter@ceiley.com";
 in
 {
   # Prometheus
@@ -100,9 +100,9 @@ in
     configuration = {
       global = {
         smtp_smarthost = smtpSmarthost;
-        smtp_from = smtpUser;
-        smtp_auth_username = smtpUser;
-        smtp_auth_password_file = config.sops.secrets.alertmanager_smtp_password.path;
+        smtp_from = smtpFrom;
+        smtp_auth_username = smtpLogin;
+        smtp_auth_password_file = "/run/credentials/alertmanager.service/smtp_password";
         smtp_require_tls = true;
       };
 
@@ -128,6 +128,8 @@ in
     };
   };
 
+  systemd.services.alertmanager.serviceConfig.LoadCredential =
+    [ "smtp_password:${config.sops.secrets."smtp/password".path}" ];
   # Grafana
   services.grafana = {
     enable = true;
@@ -141,6 +143,8 @@ in
       };
 
       security.admin_password = "$__file{${config.sops.secrets.grafana_admin_password.path}}";
+      # Keep this value stable
+      security.secret_key = "$__file{${config.sops.secrets.grafana_secret_key.path}}";
       analytics.reporting_enabled = false;
     };
 
@@ -217,12 +221,9 @@ in
     mode = "0400";
   };
 
-  sops.secrets.alertmanager_smtp_password = {
-    owner = "alertmanager";
+  sops.secrets.grafana_secret_key = {
+    owner = "grafana";
     mode = "0400";
   };
 
-  # Setup: add grafana_admin_password and alertmanager_smtp_password (the Gmail
-  # app password) to secrets/secrets.yaml, add the three DNS A records, then
-  # nixos-rebuild switch --flake .#superslice.
 }

@@ -8,7 +8,10 @@
 
     #./services/container-unifi.nix
     #./services/unifi.nix
+    ./services/monitoring.nix
     ./services/virtualisation.nix
+
+    ../common/modules/monitoring-exporters.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc
@@ -52,6 +55,8 @@
   networking = {
     hostName = "superslice";
     useDHCP = lib.mkForce false;
+    # nftables backend, for the source-scoped exporter rule (libvirt coexists).
+    nftables.enable = true;
   };
 
   systemd.network.enable = true;
