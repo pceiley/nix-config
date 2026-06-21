@@ -92,8 +92,6 @@
   #services.tailscale.useRoutingFeatures = "server";
   #services.tailscale.package = pkgs.unstable.tailscale;
 
-  };
-
   networking = {
     hostName = "taftugs";
     hostId = "8ec040f1";
