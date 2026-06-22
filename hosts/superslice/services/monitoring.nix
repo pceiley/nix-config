@@ -146,6 +146,24 @@ in
       # Keep this value stable
       security.secret_key = "$__file{${config.sops.secrets.grafana_secret_key.path}}";
       analytics.reporting_enabled = false;
+
+      "auth.generic_oauth" = {
+        enabled = true;
+        name = "Kanidm";
+        client_id = "grafana";
+        client_secret = "$__file{${config.sops.secrets."grafana_oauth2_secret".path}}";
+        scopes = "openid email profile groups";
+        auth_url = "https://idm.roastlan.net/ui/oauth2";
+        token_url = "https://idm.roastlan.net/oauth2/token";
+        api_url = "https://idm.roastlan.net/oauth2/openid/grafana/userinfo";
+        use_pkce = true;
+        allow_sign_up = true;
+        login_attribute_path = "preferred_username";
+        email_attribute_path = "email";
+        # admins -> Admin, everyone else with access -> Viewer
+        role_attribute_path = "contains(groups[*], 'grafana.admins@roastlan.net') && 'Admin' || 'Viewer'";
+      };
+
     };
 
     provision = {

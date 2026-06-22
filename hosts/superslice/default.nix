@@ -8,6 +8,7 @@
 
     #./services/container-unifi.nix
     #./services/unifi.nix
+     ./services/kanidm.nix
     ./services/monitoring.nix
     ./services/virtualisation.nix
 
