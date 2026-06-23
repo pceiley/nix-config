@@ -282,7 +282,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "max(time() - node_systemd_timer_last_trigger_seconds{name=~\"restic-backups-.+\\.timer\"})",
+          "expr": "max(time() - node_systemd_timer_last_trigger_seconds{name=~\"restic-backups-.+\\\\.timer\"})",
           "instant": true,
           "refId": "A"
         }
@@ -443,7 +443,142 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Most recent restic result and time since each job last ran.",
+      "description": "Most recent restic run per job (failed state).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "OK",
+                  "color": "green",
+                  "index": 0
+                },
+                "1": {
+                  "text": "Failed",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Result"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "Result",
+            "desc": true
+          }
+        ]
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "node_systemd_unit_state{state=\"failed\", name=~\"restic-backups-.+\\\\.service\"}",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Last backup result",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "job": true,
+              "state": true,
+              "__name__": true
+            },
+            "indexByName": {
+              "name": 0,
+              "instance": 1,
+              "Value": 2
+            },
+            "renameByName": {
+              "name": "Backup",
+              "instance": "Host",
+              "Value": "Result"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Seconds since each restic timer last fired.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -464,93 +599,20 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 93600
               }
             ]
-          }
+          },
+          "unit": "dtdurations"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Backup"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 180
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Host"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 140
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Last result"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "type": "value",
-                    "options": {
-                      "0": {
-                        "text": "OK",
-                        "color": "green",
-                        "index": 0
-                      },
-                      "1": {
-                        "text": "Failed",
-                        "color": "red",
-                        "index": 1
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "red",
-                      "value": 1
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Last run"
+              "options": "Age"
             },
             "properties": [
               {
@@ -562,26 +624,6 @@
               {
                 "id": "custom.width",
                 "value": 160
-              },
-              {
-                "id": "unit",
-                "value": "dtdurations"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "red",
-                      "value": 93600
-                    }
-                  ]
-                }
               }
             ]
           }
@@ -589,11 +631,11 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
-        "x": 0,
+        "w": 12,
+        "x": 12,
         "y": 18
       },
-      "id": 6,
+      "id": 7,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -607,7 +649,7 @@
         "showHeader": true,
         "sortBy": [
           {
-            "displayName": "Last run",
+            "displayName": "Age",
             "desc": true
           }
         ]
@@ -619,50 +661,32 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "max by (backup, instance) (label_replace(node_systemd_unit_state{state=\"failed\", name=~\"restic-backups-.+\\.service\"}, \"backup\", \"$1\", \"name\", \"restic-backups-(.+)\\\\.service\"))",
+          "expr": "time() - node_systemd_timer_last_trigger_seconds{name=~\"restic-backups-.+\\\\.timer\"}",
           "format": "table",
           "instant": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "max by (backup) (label_replace(time() - node_systemd_timer_last_trigger_seconds{name=~\"restic-backups-.+\\.timer\"}, \"backup\", \"$1\", \"name\", \"restic-backups-(.+)\\.timer\"))",
-          "format": "table",
-          "instant": true,
-          "refId": "B"
         }
       ],
-      "title": "Backups",
+      "title": "Time since last backup",
       "transformations": [
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "backup",
-            "mode": "outer"
-          }
-        },
         {
           "id": "organize",
           "options": {
             "excludeByName": {
               "Time": true,
-              "Time 1": true,
-              "Time 2": true
+              "job": true,
+              "state": true,
+              "__name__": true
             },
             "indexByName": {
-              "backup": 0,
+              "name": 0,
               "instance": 1,
-              "Value #A": 2,
-              "Value #B": 3
+              "Value": 2
             },
             "renameByName": {
-              "backup": "Backup",
+              "name": "Backup",
               "instance": "Host",
-              "Value #A": "Last result",
-              "Value #B": "Last run"
+              "Value": "Age"
             }
           }
         }
