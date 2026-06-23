@@ -44,6 +44,7 @@ in
         AuthSubnetWhitelistEnabled = true;
         AuthSubnetWhitelist = "192.168.15.0/24";
         HostHeaderValidation = false;
+        CSRFProtection = false;
       };
       RSS = {
         Session.EnableProcessing = true;

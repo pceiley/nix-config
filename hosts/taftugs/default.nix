@@ -15,6 +15,7 @@
     ./services/nginx.nix
     ./services/paperless.nix
     ./services/postgresql.nix
+    ./services/oauth2-proxy.nix
     #./services/plex.nix
     ./services/qbittorrent.nix
     ./services/restic.nix

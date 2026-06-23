@@ -29,9 +29,11 @@ in
     reverseProxy = true;                # trust X-Forwarded-* from nginx
     setXauthrequest = true;
     email.domains = [ "*" ];            # access is gated by kanidm group instead
+    trustedProxyIP = [ "127.0.0.1/32" ];
 
     nginx = {
       inherit domain;
+      proxy = "http://127.0.0.1:4180";
       virtualHosts.${domain} = { };
     };
 
@@ -51,7 +53,9 @@ in
   services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
     useACMEHost = "roastlan.net";
-    locations."/".proxyPass = "http://192.168.15.1:58080";
+    locations."/" = {
+      proxyPass = "http://192.168.15.1:58080";
+    };
   };
 
   sops.secrets = {

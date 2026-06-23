@@ -12,6 +12,13 @@
     recommendedTlsSettings = true;
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
+
+    # returns nginx's "no response" (444) for any Host without a real vhost,
+    virtualHosts."_" = {
+      default = true;
+      rejectSSL = true;
+      locations."/".return = "444";
+    };
   };
 
   networking.firewall = {
