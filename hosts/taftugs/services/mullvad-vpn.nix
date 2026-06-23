@@ -20,9 +20,11 @@
   vpnNamespaces.mullvad = {
     enable = true;
     wireguardConfigFile = config.sops.secrets.wireguard_wg0_conf.path;
-    # LAN subnet(s) allowed to reach mapped ports (add VLANs as needed).
-    accessibleFrom = [ "192.168.10.0/24" "192.168.40.0/24" "192.168.52.0/24" ];
-    # Expose the qBittorrent WebUI from the host: host:58080 -> namespace:58080.
-    portMappings = [ { from = 58080; to = 58080; } ];
+    # WebUI is no longer exposed to the LAN; nginx reaches it across the
+    # veth bridge (192.168.15.1) and SSO is the only entry point.
+    # # LAN subnet(s) allowed to reach mapped ports (add VLANs as needed).
+    # accessibleFrom = [ "192.168.10.0/24" "192.168.40.0/24" "192.168.52.0/24" ];
+    # # Expose the qBittorrent WebUI from the host: host:58080 -> namespace:58080.
+    # portMappings = [ { from = 58080; to = 58080; } ];
   };
 }

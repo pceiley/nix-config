@@ -47,6 +47,7 @@ in
         "grafana.admins" = { };   # elevates to the grafana Admin role
         "mealie.users"  = { };   # regular Mealie access
         "mealie.admins" = { };   # Mealie admin
+        "qbittorrent.access" = { };
       };
 
       persons = {
@@ -54,13 +55,13 @@ in
         pceiley_a = {
           displayName = "Peter Admin";
           mailAddresses = [ "peter_a@ceiley.com" ];
-          groups = [ "grafana.access" "grafana.admins" "mealie.admins" ];
+          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" ];
         };
         # less-privileged personal account, viewer only
         pceiley = {
           displayName = "Peter Ceiley";
           mailAddresses = [ "peter@ceiley.com" ];
-          groups = [ "grafana.access" "mealie.users" ];
+          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" ];
         };
       };
 
@@ -85,6 +86,15 @@ in
         # both groups need scopes, since admins may not be in mealie.users
         scopeMaps."mealie.users"  = [ "openid" "email" "profile" "groups" ];
         scopeMaps."mealie.admins" = [ "openid" "email" "profile" "groups" ];
+      };
+
+      systems.oauth2.qbittorrent = {
+        displayName = "qBittorrent";
+        originUrl = "https://bt.roastlan.net/oauth2/callback";
+        originLanding = "https://bt.roastlan.net/";
+        basicSecretFile = config.sops.secrets."qbittorrent_oauth2_secret".path;
+        preferShortUsername = true;
+        scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" "groups" ];
       };
     };
   };
@@ -122,5 +132,7 @@ in
     };
 
     "mealie_oauth2_secret".owner = "kanidm";
+
+    "qbittorrent_oauth2_secret".owner = "kanidm";
   };
 }
