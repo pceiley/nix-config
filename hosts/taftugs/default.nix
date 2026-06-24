@@ -19,6 +19,7 @@
     #./services/plex.nix
     ./services/qbittorrent.nix
     ./services/restic.nix
+    ./services/restic-recv.nix
     ./services/sabnzbd.nix
     ./services/samba.nix
     #./services/search.nix
