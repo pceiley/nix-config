@@ -21,7 +21,7 @@
       OIDC_USER_GROUP  = "mealie.users@roastlan.net";
       OIDC_ADMIN_GROUP = "mealie.admins@roastlan.net";
       OIDC_SIGNUP_ENABLED = "true";    # auto-create the Mealie user on first login
-      OIDC_AUTO_REDIRECT = "false";    # keep the login page with an OIDC button
+      OIDC_AUTO_REDIRECT = "true";    # false will restore the login page with an OIDC button
     };
 
     services.mealie.credentialsFile = config.sops.templates."mealie-oidc.env".path;
