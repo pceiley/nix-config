@@ -1,7 +1,7 @@
 # Peter's restic backup configuration for purecheese
 #
 
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   secretsFile = config.sops.secrets.restic_password.path;
@@ -53,6 +53,10 @@ in
       pruneOpts = retentionPolicy;
     };
   };
+
+  systemd.services.restic-backups-localbackup.unitConfig.RequiresMountsFor = [ "/mnt/usb-backup" ];
+  systemd.services.restic-backups-localbackup.serviceConfig.ExecStartPre =
+      "${pkgs.util-linux}/bin/mountpoint -q /mnt/usb-backup";
 
   programs.fish.shellAliases = {
     restic_local_env = "sudo RESTIC_REPOSITORY=${localRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";

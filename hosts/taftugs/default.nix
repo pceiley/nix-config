@@ -67,11 +67,11 @@
   #  size = 2048;
   #}];
 
-  fileSystems."/mnt/usb-backup" =
-    { device = "/dev/disk/by-uuid/2f40a937-359e-49b8-8563-b66f679f17f8";
-      fsType = "ext4";
-      options = [ "nofail,x-systemd.device-timeout=1ms,noauto,x-systemd.automount" ];
-    };
+  fileSystems."/mnt/usb-backup" = {
+    device = "/dev/disk/by-uuid/2f40a937-359e-49b8-8563-b66f679f17f8";
+    fsType = "ext4";
+    options = [ "nofail" "noauto" "x-systemd.automount" "x-systemd.device-timeout=5s" ];
+  };
 
   zramSwap.enable = true;
 
