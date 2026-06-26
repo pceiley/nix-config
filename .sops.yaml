@@ -12,8 +12,8 @@ keys:
   - &users:
     - &pceiley age1q86vdk8lfmmmqu9r8caj5u5srfhkhwgtsq92ls224t00e8j3ndlsa4crhv
   - &hosts:
-    - &taftugs age1ue9s47z6rl9n094taud3gwfyrxffqtlz7asqxurtvymu9pyp8ywqggrqh6
-    - &superslice age1lrsvfrv6p9gt4472c67mqay5pmt5kldaqdqlew0tldjsnj3und0sv3qt43
+    - &taftugs age1mt5felmuhnqtr5ksqsxdlu48eeugt5pnusyt5z6dpmaecvuyfyjsjejayf
+    - &superslice age12as5qysvqrt3k5ly5nz4u50xlh533n73pkxs8x47lxjjz4eulcpqqykst5
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:

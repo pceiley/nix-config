@@ -8,8 +8,9 @@
 
     #./services/container-unifi.nix
     #./services/unifi.nix
-     ./services/kanidm.nix
+    ./services/kanidm.nix
     ./services/monitoring.nix
+    #./services/restic.nix
     ./services/virtualisation.nix
 
     ../common/modules/monitoring-exporters.nix

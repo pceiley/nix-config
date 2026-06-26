@@ -29,6 +29,10 @@ in
         tls_chain = "${certDir}/fullchain.pem";
         tls_key   = "${certDir}/key.pem";
         http_client_address_info."x-forward-for" = [ "127.0.0.1" ];
+        online_backup = {
+          versions = 7;
+          schedule = "30 00 * * *";   # 00:30 daily; restic grabs it at 01:00
+        };
       };
     };
 

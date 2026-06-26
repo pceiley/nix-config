@@ -84,6 +84,32 @@ sops-edit file="secrets/secrets.yaml":
     sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key > "$key"
     SOPS_AGE_KEY_FILE="$key" TMPDIR=/dev/shm sops "{{ file }}" || test $? -eq 200
 
+# Re-encrypt secrets to current .sops.yaml recipients using THIS host's key
+# (no personal key needed). Only works if this host is STILL a recipient of the
+# file as currently encrypted — i.e. use it when adding/removing OTHER hosts'
+# keys, NOT when rotating this host's own key.
+sops-updatekeys-host file="secrets/secrets.yaml":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    key="$(mktemp /dev/shm/hostage.XXXXXX)"
+    trap 'rm -f "$key"' EXIT
+    sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key > "$key"
+    SOPS_AGE_KEY_FILE="$key" TMPDIR=/dev/shm sops updatekeys "{{ file }}"
+
+# Re-encrypt secrets to current .sops.yaml recipients, using your PERSONAL age
+# key (paste when prompted). Needed after rotating host keys, since the host's
+# own key can no longer decrypt the not-yet-rewrapped file.
+sops-updatekeys-personal file="secrets/secrets.yaml":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    key="$(mktemp /dev/shm/userage.XXXXXX)"
+    trap 'rm -f "$key"' EXIT
+    printf 'Paste personal age key (AGE-SECRET-KEY-1...), then Enter: ' >&2
+    read -rs secret; echo >&2
+    printf '%s' "$secret" > "$key"
+    unset secret
+    SOPS_AGE_KEY_FILE="$key" TMPDIR=/dev/shm sops updatekeys "{{ file }}"
+
 # Verify Mullvad VPN namespace confinement (netns egress vs host egress)
 vpn-check namespace="mullvad":
     #!/usr/bin/env bash
