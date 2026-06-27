@@ -88,7 +88,7 @@ sops-edit file="secrets/secrets.yaml":
 # (no personal key needed). Only works if this host is STILL a recipient of the
 # file as currently encrypted — i.e. use it when adding/removing OTHER hosts'
 # keys, NOT when rotating this host's own key.
-sops-updatekeys-host file="secrets/secrets.yaml":
+sops-updatekeys file="secrets/secrets.yaml":
     #!/usr/bin/env bash
     set -euo pipefail
     key="$(mktemp /dev/shm/hostage.XXXXXX)"
