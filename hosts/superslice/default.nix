@@ -6,6 +6,9 @@
     ../common/users/pceiley
     ../common/users/cceiley
 
+    ../common/modules/monitoring-exporters.nix
+    ../common/modules/restic-metrics.nix
+
     #./services/container-unifi.nix
     #./services/unifi.nix
     ./services/kanidm.nix
@@ -13,7 +16,6 @@
     ./services/restic.nix
     ./services/virtualisation.nix
 
-    ../common/modules/monitoring-exporters.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc

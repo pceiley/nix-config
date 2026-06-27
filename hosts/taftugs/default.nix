@@ -4,7 +4,9 @@
     ../common
     ../common/users/pceiley
     ../common/users/cceiley
+
     ../common/modules/monitoring-exporters.nix
+    ../common/modules/restic-metrics.nix
 
     # Services
     ./services/actual.nix

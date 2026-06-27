@@ -83,6 +83,23 @@ in
                   severity: warning
                 annotations:
                   summary: "systemd unit {{ $labels.name }} failed on {{ $labels.instance }}"
+
+              - alert: ResticBackupStale
+                expr: |
+                  time() - restic_backup_last_snapshot_timestamp_seconds > 26 * 3600
+                for: 30m
+                labels:
+                  severity: warning
+                annotations:
+                  summary: "restic repo {{ $labels.repo }} has no snapshot in >26h"
+
+              - alert: ResticRepoUnreachable
+                expr: restic_backup_query_success == 0
+                for: 2h
+                labels:
+                  severity: warning
+                annotations:
+                  summary: "restic repo {{ $labels.repo }} query failing (unreachable/auth)"
       ''
     ];
   };

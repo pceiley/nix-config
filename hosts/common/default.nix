@@ -83,6 +83,7 @@
       age
       bottom
       dig
+      ghostty.terminfo
       git
       htop
       just
