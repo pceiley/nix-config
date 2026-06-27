@@ -9,8 +9,9 @@
 let
   downloadDir = "/data/multimedia/downloads";
   fixDownloadPerms = pkgs.writeShellScriptBin "fixdlperms" ''
-    # only touches the single completed torrent path qBittorrent passes as %F
     path="$1"
+    parent="$(dirname "$path")"
+    [ -d "$parent" ] && chmod g+ws "$parent"
     if [ -d "$path" ]; then
       find "$path" -type d -exec chmod 2775 {} +
       find "$path" -type f -exec chmod 0664 {} +
