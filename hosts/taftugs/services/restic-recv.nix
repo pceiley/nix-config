@@ -23,7 +23,7 @@
     shell = pkgs.bashInteractive;   # the sftp subsystem needs a valid shell
     openssh.authorizedKeys.keys = [
       # superslice's host pubkey: cat /etc/ssh/ssh_host_ed25519_key.pub
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN34faljMJQyv5Qq3FhpJbUOqnUq6kSWKN8OVe5xaiMj root@superslice"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMAGTiqaZD2SEMFsXQUH+goPWvEv0dd/mVdWGaovXQy superslice"
     ];
   };
   users.groups.restic-recv = { };
