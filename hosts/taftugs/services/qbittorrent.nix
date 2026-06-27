@@ -40,9 +40,9 @@ in
         GlobalMaxSeedingMinutes = 15;
       };
       Preferences.WebUI = {
-        Address = "192.168.15.1";
+        Address = "172.16.15.1";
         AuthSubnetWhitelistEnabled = true;
-        AuthSubnetWhitelist = "192.168.15.0/24";
+        AuthSubnetWhitelist = "172.16.15.0/24";
         HostHeaderValidation = false;
         CSRFProtection = false;
       };

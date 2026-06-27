@@ -54,7 +54,7 @@ in
     forceSSL = true;
     useACMEHost = "roastlan.net";
     locations."/" = {
-      proxyPass = "http://192.168.15.1:58080";
+      proxyPass = "http://172.16.15.1:58080";
     };
   };
 
