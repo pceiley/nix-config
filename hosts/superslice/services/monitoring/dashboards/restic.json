@@ -4,20 +4,20 @@
   "tags": ["backups"],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 3,
   "refresh": "5m",
-  "time": { "from": "now-7d", "to": "now" },
+  "time": { "from": "now-6h", "to": "now" },
   "panels": [
     {
       "id": 1,
       "title": "Hours since last snapshot",
       "type": "stat",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "targets": [
         {
-          "expr": "(time() - restic_backup_last_snapshot_timestamp_seconds) / 3600",
-          "legendFormat": "{{repo}}",
+          "expr": "(time() - restic_backup_last_snapshot_timestamp_seconds) / 3600 and (restic_backup_last_snapshot_timestamp_seconds > 0)",
+          "legendFormat": "{{instance}} / {{repo}}",
           "instant": true
         }
       ],
@@ -44,14 +44,14 @@
     },
     {
       "id": 2,
-      "title": "Repo reachable (query success)",
+      "title": "Repo reachable",
       "type": "stat",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "targets": [
         {
           "expr": "restic_backup_query_success",
-          "legendFormat": "{{repo}}",
+          "legendFormat": "{{instance}} / {{repo}}",
           "instant": true
         }
       ],
@@ -72,32 +72,6 @@
             "steps": [
               { "color": "red", "value": null },
               { "color": "green", "value": 1 }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "id": 3,
-      "title": "Snapshot age over time (hours)",
-      "type": "timeseries",
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 8 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "targets": [
-        {
-          "expr": "(time() - restic_backup_last_snapshot_timestamp_seconds) / 3600",
-          "legendFormat": "{{repo}}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "h",
-          "custom": { "drawStyle": "line", "fillOpacity": 10 },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 26 }
             ]
           }
         }
