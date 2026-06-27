@@ -10,7 +10,7 @@
     #./services/unifi.nix
     ./services/kanidm.nix
     ./services/monitoring.nix
-    #./services/restic.nix
+    ./services/restic.nix
     ./services/virtualisation.nix
 
     ../common/modules/monitoring-exporters.nix
@@ -59,6 +59,10 @@
     useDHCP = lib.mkForce false;
     # nftables backend, for the source-scoped exporter rule (libvirt coexists).
     nftables.enable = true;
+  };
+  networking.hosts = {
+      "192.168.10.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
+      "192.168.5.5"  = [ "superslice" "superslice.srv.roastlan.net" ];
   };
 
   systemd.network.enable = true;

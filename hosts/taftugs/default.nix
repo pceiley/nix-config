@@ -102,6 +102,11 @@
     useDHCP = lib.mkForce false;
   };
 
+  networking.hosts = {
+      "192.168.10.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
+      "192.168.5.5"  = [ "superslice" "superslice.srv.roastlan.net" ];
+  };
+
   systemd.network.enable = true;
 
   systemd.network.networks."10-eno1" = {
