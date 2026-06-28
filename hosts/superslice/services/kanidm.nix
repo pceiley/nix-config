@@ -52,6 +52,7 @@ in
         "mealie.users"  = { };   # regular Mealie access
         "mealie.admins" = { };   # Mealie admin
         "qbittorrent.access" = { };
+        "actual.access" = { };
       };
 
       persons = {
@@ -59,13 +60,13 @@ in
         pceiley_a = {
           displayName = "Peter Admin";
           mailAddresses = [ "peter_a@ceiley.com" ];
-          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" ];
+          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" "actual.access" ];
         };
         # less-privileged personal account, viewer only
         pceiley = {
           displayName = "Peter Ceiley";
           mailAddresses = [ "peter@ceiley.com" ];
-          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" ];
+          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" "actual.access" ];
         };
       };
 
@@ -99,6 +100,16 @@ in
         basicSecretFile = config.sops.secrets."qbittorrent_oauth2_secret".path;
         preferShortUsername = true;
         scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" "groups" ];
+      };
+
+      systems.oauth2.actual = {
+        displayName = "Actual Budget";
+        originUrl = "https://budget.roastlan.net/openid/callback";
+        originLanding = "https://budget.roastlan.net/";
+        basicSecretFile = config.sops.secrets."actual_oauth2_secret".path;
+        preferShortUsername = true;
+        # actual does its own per-budget authz, so no group claim needed.
+        scopeMaps."actual.access" = [ "openid" "email" "profile" ];
       };
     };
   };
@@ -138,5 +149,7 @@ in
     "mealie_oauth2_secret".owner = "kanidm";
 
     "qbittorrent_oauth2_secret".owner = "kanidm";
+
+    "actual_oauth2_secret".owner = "kanidm";
   };
 }
