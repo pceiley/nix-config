@@ -70,6 +70,19 @@ in
         };
       };
 
+      systems.oauth2.actual = {
+        displayName = "Actual Budget";
+        originUrl = "https://budget.roastlan.net/openid/callback";
+        originLanding = "https://budget.roastlan.net/";
+        basicSecretFile = config.sops.secrets."actual_oauth2_secret".path;
+        preferShortUsername = true;
+        # actual's openid-client only accepts RS256 id_tokens; kanidm signs
+        # ES256 by default, so opt this client into legacy (RS256) crypto.
+        enableLegacyCrypto = true;
+        # actual does its own per-budget authz, so no group claim needed.
+        scopeMaps."actual.access" = [ "openid" "email" "profile" ];
+      };
+
       systems.oauth2.grafana = {
         displayName = "Grafana";
         originUrl = "${grafanaUrl}/login/generic_oauth";
@@ -100,16 +113,6 @@ in
         basicSecretFile = config.sops.secrets."qbittorrent_oauth2_secret".path;
         preferShortUsername = true;
         scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" "groups" ];
-      };
-
-      systems.oauth2.actual = {
-        displayName = "Actual Budget";
-        originUrl = "https://budget.roastlan.net/openid/callback";
-        originLanding = "https://budget.roastlan.net/";
-        basicSecretFile = config.sops.secrets."actual_oauth2_secret".path;
-        preferShortUsername = true;
-        # actual does its own per-budget authz, so no group claim needed.
-        scopeMaps."actual.access" = [ "openid" "email" "profile" ];
       };
     };
   };
