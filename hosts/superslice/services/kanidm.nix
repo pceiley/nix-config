@@ -62,11 +62,17 @@ in
           mailAddresses = [ "peter_a@ceiley.com" ];
           groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" "actual.access" ];
         };
-        # less-privileged personal account, viewer only
+        # less-privileged personal account
         pceiley = {
           displayName = "Peter Ceiley";
           mailAddresses = [ "peter@ceiley.com" ];
           groups = [ "grafana.access" "mealie.users" "qbittorrent.access" "actual.access" ];
+        };
+
+        cceiley = {
+          displayName = "Clare Ceiley";
+          mailAddresses = [ "cjceiley@gmail.com" ];
+          groups = [ "mealie.users" "actual.access" ];
         };
       };
 
