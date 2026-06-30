@@ -53,6 +53,7 @@ in
         "mealie.admins" = { };   # Mealie admin
         "qbittorrent.access" = { };
         "actual.access" = { };
+        "paperless.access" = { };
       };
 
       persons = {
@@ -60,19 +61,19 @@ in
         pceiley_a = {
           displayName = "Peter Admin";
           mailAddresses = [ "peter_a@ceiley.com" ];
-          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" "actual.access" ];
+          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" "actual.access" "paperless.access" ];
         };
         # less-privileged personal account
         pceiley = {
           displayName = "Peter Ceiley";
           mailAddresses = [ "peter@ceiley.com" ];
-          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" "actual.access" ];
+          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" "actual.access" "paperless.access" ];
         };
 
         cceiley = {
           displayName = "Clare Ceiley";
           mailAddresses = [ "cjceiley@gmail.com" ];
-          groups = [ "mealie.users" "actual.access" ];
+          groups = [ "mealie.users" "actual.access" "paperless.access" ];
         };
       };
 
@@ -120,6 +121,18 @@ in
         preferShortUsername = true;
         scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" "groups" ];
       };
+
+      systems.oauth2.paperless = {
+        displayName = "Paperless";
+        # django-allauth's openid_connect provider builds the callback as
+        # /accounts/oidc/<provider_id>/login/callback/; provider_id is "kanidm".
+        originUrl = "https://paperless.roastlan.net/accounts/oidc/kanidm/login/callback/";
+        originLanding = "https://paperless.roastlan.net/";
+        basicSecretFile = config.sops.secrets."paperless_oauth2_secret".path;
+        preferShortUsername = true;
+        # paperless does its own per-account authz, so no group claim needed.
+        scopeMaps."paperless.access" = [ "openid" "email" "profile" ];
+      };
     };
   };
 
@@ -160,5 +173,7 @@ in
     "qbittorrent_oauth2_secret".owner = "kanidm";
 
     "actual_oauth2_secret".owner = "kanidm";
+
+    "paperless_oauth2_secret".owner = "kanidm";
   };
 }
