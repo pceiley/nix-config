@@ -51,9 +51,10 @@ in
         "grafana.admins" = { };   # elevates to the grafana Admin role
         "mealie.users"  = { };   # regular Mealie access
         "mealie.admins" = { };   # Mealie admin
+        "papra.access" = { };
         "qbittorrent.access" = { };
         "actual.access" = { };
-        "paperless.access" = { };
+        "paperless.users" = { };
       };
 
       persons = {
@@ -61,19 +62,19 @@ in
         pceiley_a = {
           displayName = "Peter Admin";
           mailAddresses = [ "peter_a@ceiley.com" ];
-          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" "actual.access" "paperless.access" ];
+          groups = [ "grafana.access" "grafana.admins" "mealie.admins" "qbittorrent.access" "actual.access" "paperless.users" "papra.access" ];
         };
         # less-privileged personal account
         pceiley = {
           displayName = "Peter Ceiley";
           mailAddresses = [ "peter@ceiley.com" ];
-          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" "actual.access" "paperless.access" ];
+          groups = [ "grafana.access" "mealie.users" "qbittorrent.access" "actual.access" "paperless.users" "papra.access" ];
         };
 
         cceiley = {
           displayName = "Clare Ceiley";
           mailAddresses = [ "cjceiley@gmail.com" ];
-          groups = [ "mealie.users" "actual.access" "paperless.access" ];
+          groups = [ "mealie.users" "actual.access" "paperless.users" "papra.access" ];
         };
       };
 
@@ -130,8 +131,22 @@ in
         originLanding = "https://paperless.roastlan.net/";
         basicSecretFile = config.sops.secrets."paperless_oauth2_secret".path;
         preferShortUsername = true;
-        # paperless does its own per-account authz, so no group claim needed.
-        scopeMaps."paperless.access" = [ "openid" "email" "profile" ];
+        # kanidm returns groups as SPNs, so the Paperless-side Django group
+        # (created manually, see README) must be named with the full
+        # "<name>@roastlan.net" suffix to match on sync.
+        scopeMaps."paperless.users" = [ "openid" "email" "profile" "groups" ];
+      };
+
+      systems.oauth2.papra = {
+        displayName = "Papra";
+        # Better Auth's generic OAuth plugin builds the callback as
+        # /api/auth/oauth2/callback/<providerId>; providerId is "kanidm".
+        originUrl = "https://papra.roastlan.net/api/auth/oauth2/callback/kanidm";
+        originLanding = "https://papra.roastlan.net/";
+        basicSecretFile = config.sops.secrets."papra_oauth2_secret".path;
+        preferShortUsername = true;
+        # papra does its own per-account authz + first-login-admin, no group claim needed.
+        scopeMaps."papra.access" = [ "openid" "email" "profile" ];
       };
     };
   };
@@ -168,12 +183,10 @@ in
       mode = "0440";
     };
 
-    "mealie_oauth2_secret".owner = "kanidm";
-
-    "qbittorrent_oauth2_secret".owner = "kanidm";
-
     "actual_oauth2_secret".owner = "kanidm";
-
+    "mealie_oauth2_secret".owner = "kanidm";
+    "qbittorrent_oauth2_secret".owner = "kanidm";
     "paperless_oauth2_secret".owner = "kanidm";
+    "papra_oauth2_secret".owner = "kanidm";
   };
 }
