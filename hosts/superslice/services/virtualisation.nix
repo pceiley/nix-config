@@ -27,6 +27,24 @@
     linkConfig.RequiredForOnline = "carrier";
   };
 
+  # Workaround for a known e1000e TX hang ("Detected Hardware Unit Hang")
+  # triggered by bridging eno1 into br0 above. TSO/GSO/GRO offload + bridging
+  # is the most common reproduction case for this long-standing e1000e driver
+  # bug; disabling those offloads avoids it at a small CPU/throughput cost
+  # (negligible on a gigabit link). Re-applies whenever eno1 reappears,
+  # including after the driver's own reset-on-hang recovery.
+  systemd.services.eno1-offload-workaround = {
+    description = "Disable TSO/GSO/GRO on eno1 to work around e1000e TX hangs under bridging";
+    wantedBy = [ "network-pre.target" ];
+    before = [ "network-pre.target" ];
+    bindsTo = [ "sys-subsystem-net-devices-eno1.device" ];
+    after = [ "sys-subsystem-net-devices-eno1.device" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.ethtool}/bin/ethtool -K eno1 tso off gso off gro off";
+    };
+  };
+
   # br0 takes over the host's previous static config
   systemd.network.networks."20-br0" = {
     matchConfig.Name = "br0";
