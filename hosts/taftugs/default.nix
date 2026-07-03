@@ -16,6 +16,7 @@
     #./services/nextcloud.nix
     ./services/nginx.nix
     ./services/paperless.nix
+    ./services/papra.nix
     ./services/postgresql.nix
     ./services/oauth2-proxy.nix
     #./services/plex.nix
