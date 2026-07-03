@@ -17,6 +17,13 @@ let
   backupActual = "/var/lib/private/actual";
   backupImmich = "/data/immich";
   backupMealie = "/var/lib/private/mealie";
+
+  # Papra spans two locations: the sqlite DB + ingestion folder under
+  # /var/lib/papra (StateDirectory; static papra user, so NOT /var/lib/private),
+  # and the document blobs on the dedicated ZFS dataset at /data/papra
+  backupPapraState = "/var/lib/papra";
+  backupPapraDocs = "/data/papra";
+
   backupTarget = "/data/family";
   backupPaperless = "/var/lib/paperless";
   backupOther = "/data/backup";
@@ -45,7 +52,7 @@ in
     localbackup = {
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget backupOther backupPaperless backupActual backupImmich backupMealie ];
+      paths = [ backupTarget backupOther backupPaperless backupActual backupImmich backupMealie backupPapraState backupPapraDocs ];
       repository = localRepo;
       timerConfig = {
         OnCalendar = "01:30";
@@ -57,7 +64,7 @@ in
     remotebackup = {
       exclude = excludes;
       passwordFile = secretsFile;
-      paths = [ backupTarget backupOther backupPaperless backupActual backupMealie ];
+      paths = [ backupTarget backupOther backupPaperless backupActual backupMealie backupPapraState backupPapraDocs ];
       repository = remoteRepo;
       rcloneConfigFile = rcloneLive;        # writable copy, NOT the read-only secret
       backupPrepareCommand = seedRcloneCmd; # seed the writable config before each run
@@ -69,9 +76,15 @@ in
     };
   };
 
-  systemd.services.restic-backups-localbackup.unitConfig.RequiresMountsFor = [ "/mnt/usb-backup" ];
+  # Guard against backing up empty ZFS mountpoints: if the data pool hasn't
+  # mounted (e.g. zfs-mount failed), the /data/* source dirs would exist but be
+  # empty, and restic would silently snapshot nothing. RequiresMountsFor ties
+  # each job to the relevant mounts. /mnt/usb-backup is also the local repo.
+  systemd.services.restic-backups-localbackup.unitConfig.RequiresMountsFor = [ "/mnt/usb-backup" "/data" ];
   systemd.services.restic-backups-localbackup.serviceConfig.ExecStartPre =
       "${pkgs.util-linux}/bin/mountpoint -q /mnt/usb-backup";
+
+  systemd.services.restic-backups-remotebackup.unitConfig.RequiresMountsFor = [ "/data" ];
 
   programs.fish.shellAliases = {
     restic_local_env = "sudo RESTIC_REPOSITORY=${localRepo} RESTIC_PASSWORD_FILE=${secretsFile} -i";
