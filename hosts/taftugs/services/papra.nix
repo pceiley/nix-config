@@ -10,7 +10,7 @@ in
   services.papra = {
     enable = true;
 
-    package = pkgs.unstable.papra;
+    #package = pkgs.unstable.papra;
 
     # AUTH_SECRET and the Kanidm client secret (embedded in AUTH_PROVIDERS_CUSTOMS)
     # come from the sops template below, never the nix store.
