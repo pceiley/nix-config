@@ -53,6 +53,15 @@ in
   services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
     useACMEHost = "roastlan.net";
+    # oauth2-proxy's OIDC session Set-Cookie (id_token + groups, split into
+    # several _oauth2_proxy_* chunks) overflows nginx's default 4k proxy header
+    # buffer on /oauth2/callback -> "upstream sent too big header" (502).
+    # inherited by the module-generated /oauth2/ location at server scope.
+    extraConfig = ''
+      proxy_buffer_size 16k;
+      proxy_buffers 8 16k;
+      proxy_busy_buffers_size 32k;
+    '';
     locations."/" = {
       proxyPass = "http://172.16.15.1:58080";
     };

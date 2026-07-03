@@ -1,24 +1,11 @@
-# qBittorrent service activation
+# qBittorrent
 #
-# The shell script 'fixdlperms' is also created and should be added to the
-# "Run external program on finished" section with the full path:
-# /run/current-system/sw/bin/fixdlperms
 
 { pkgs, ... }:
 
 let
   downloadDir = "/data/multimedia/downloads";
-  fixDownloadPerms = pkgs.writeShellScriptBin "fixdlperms" ''
-    path="$1"
-    parent="$(dirname "$path")"
-    [ -d "$parent" ] && chmod g+ws "$parent"
-    if [ -d "$path" ]; then
-      find "$path" -type d -exec chmod 2775 {} +
-      find "$path" -type f -exec chmod 0664 {} +
-    elif [ -e "$path" ]; then
-      chmod 0664 "$path"
-    fi
-  '';
+  incompleteDir = "/data/multimedia/incomplete";
 in
 {
   services.qbittorrent = {
@@ -33,7 +20,8 @@ in
     serverConfig = {
       BitTorrent.Session = {
         DefaultSavePath = downloadDir;
-        TempPath = "/var/lib/qbittorrent/incomplete";
+        TempPath = incompleteDir;
+        TempPathEnabled = true;
         GlobalDLSpeedLimit = 40000;
         GlobalUPSpeedLimit = 1000;
         AlternativeGlobalDLSpeedLimit = 10000;
@@ -52,10 +40,6 @@ in
         AutoDownloader.EnableProcessing = true;
         AutoDownloader.DownloadRepacks = true;
       };
-      AutoRun = {
-        enabled = true;
-        program = ''${fixDownloadPerms}/bin/fixdlperms "%F"'';
-      };
     };
   };
 
@@ -67,6 +51,15 @@ in
       vpnNamespace = "mullvad";
     };
     path = [ pkgs.python3 ];
+    # create files 664 / dirs 775 (umask 002); with the setgid multimedia
+    # parent dirs, completed downloads come out group-owned by multimedia and
+    # group-writable at creation, and survive temp->save moves and WebUI
+    # recategorisation (unlike a completion-hook chmod). app files under
+    # /var/lib are group qbittorrent, whose group has no other members.'
+    serviceConfig.UMask = "0002";
+    # One-time cleanup for anything already downloaded:
+    # sudo find /data/multimedia/downloads -type d -exec chmod 2775 {} +
+    # sudo find /data/multimedia/downloads -type f -exec chmod 0664 {} +
   };
 
   # Allow qbittorrent to save files in the multimedia share
@@ -74,5 +67,6 @@ in
 
   systemd.tmpfiles.rules = [
     "d ${downloadDir} 2775 qbittorrent multimedia -"
+    "d ${incompleteDir} 2775 qbittorrent multimedia -"
   ];
 }
