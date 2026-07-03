@@ -1,6 +1,6 @@
 # Papra - minimalist document archiving, gated by Kanidm SSO
 
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   port = 1221;
@@ -9,6 +9,8 @@ in
 {
   services.papra = {
     enable = true;
+
+    package = pkgs.unstable.papra;
 
     # AUTH_SECRET and the Kanidm client secret (embedded in AUTH_PROVIDERS_CUSTOMS)
     # come from the sops template below, never the nix store.
@@ -33,6 +35,17 @@ in
       # service waits for zfs-mount (see below). The sqlite DB and the ingestion
       # folder stay under /var/lib/papra (StateDirectory).
       DOCUMENT_STORAGE_FILESYSTEM_ROOT = "/data/papra";
+
+      # Customizable storage path: replace the opaque legacy keys
+      # ({{organization.id}}/originals/{{document.id}}) with short, readable
+      # paths. The document id is long and ugly, so we key on the name and let
+      # Papra disambiguate collisions with an incremental suffix (invoice.pdf,
+      # invoice_1.pdf, ...), using the random 8-char suffix only if those are
+      # exhausted. Requires the legacy system off.
+      DOCUMENT_STORAGE_USE_LEGACY_STORAGE_KEY_DEFINITION_SYSTEM = false;
+      DOCUMENT_STORAGE_KEY_PATTERN = "{{organization.id}}/{{document.name}}";
+      DOCUMENT_STORAGE_PATTERN_MAX_INCREMENTAL_SUFFIX_ATTEMPTS = 100;
+      DOCUMENT_STORAGE_PATTERN_ENABLE_RANDOM_SUFFIX_FALLBACK = true;
 
       # First identity to log in becomes admin. With SSO that's the first
       # Kanidm user in papra.access who signs in.
