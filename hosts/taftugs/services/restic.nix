@@ -80,11 +80,17 @@ let
   # + prune (the repack), then verify integrity. checkArgs lets the local job do
   # cheap partial data verification (bit-rot on the USB disk) while the remote
   # stays structural-only to avoid OneDrive egress.
+  #
+  # --retry-lock: a nightly backup that runs long still holds its (non-exclusive)
+  # lock, which blocks the exclusive lock prune needs. Rather than erroring out
+  # immediately (restic's default is "waiting up to 0s"), wait it out. `unlock`
+  # still runs first to clear genuinely stale locks from a crashed prior run.
+  lockWait = "2h";
   resticBin = job: "/run/current-system/sw/bin/restic-${job}";
   maintenanceExec = { job, checkArgs ? "" }: [
     "${resticBin job} unlock"
-    "${resticBin job} forget --prune ${lib.concatStringsSep " " retentionPolicy}"
-    "${resticBin job} check ${checkArgs}"
+    "${resticBin job} forget --prune --retry-lock ${lockWait} ${lib.concatStringsSep " " retentionPolicy}"
+    "${resticBin job} check --retry-lock ${lockWait} ${checkArgs}"
   ];
 in
 {
@@ -140,11 +146,11 @@ in
 
   systemd.timers.restic-maintenance-localbackup = {
     wantedBy = [ "timers.target" ];
-    timerConfig = { OnCalendar = "Sun 04:00"; Persistent = true; };
+    timerConfig = { OnCalendar = "Sun 05:00"; Persistent = true; };
   };
   systemd.timers.restic-maintenance-remotebackup = {
     wantedBy = [ "timers.target" ];
-    timerConfig = { OnCalendar = "Sun 05:00"; Persistent = true; };
+    timerConfig = { OnCalendar = "Sun 06:00"; Persistent = true; };
   };
 
   # Drop-in restic wrappers: everything after the alias is passed straight to
