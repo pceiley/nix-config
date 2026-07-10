@@ -37,7 +37,7 @@ in
             labels.instance = "superslice";
           }
           {
-            targets = [ "192.168.10.3:9100" ];
+            targets = [ "192.168.6.3:9100" ];
             labels.instance = "taftugs";
           }
         ];

@@ -63,7 +63,7 @@
     nftables.enable = true;
   };
   networking.hosts = {
-      "192.168.10.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
+      "192.168.6.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
       "192.168.5.5"  = [ "superslice" "superslice.srv.roastlan.net" ];
   };
 
