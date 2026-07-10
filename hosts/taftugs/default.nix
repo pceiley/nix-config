@@ -106,7 +106,7 @@
   };
 
   networking.hosts = {
-      "192.168.10.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
+      "192.168.6.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
       "192.168.5.5"  = [ "superslice" "superslice.srv.roastlan.net" ];
   };
 
@@ -117,13 +117,17 @@
     networkConfig = {
       IPv6AcceptRA = true;
     };
-    address = [ "192.168.10.3/24" ];
-    gateway = [ "192.168.10.254" ];
-    dns = [ "192.168.10.254" ];
+    address = [ "192.168.6.3/24" ];
+    gateway = [ "192.168.6.254" ];
+    dns = [ "192.168.6.254" ];
 
     # make the routes on this interface a dependency for network-online.target
     linkConfig.RequiredForOnline = "routable";
   };
+
+  # iperf3
+  networking.firewall.allowedTCPPorts = [ 5201 ];
+  networking.firewall.allowedUDPPorts = [ 5201 ];
 
   system.stateVersion = "22.05";
 
