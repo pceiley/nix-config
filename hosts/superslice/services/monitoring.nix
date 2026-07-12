@@ -250,6 +250,11 @@ in
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+  sops.secrets."grafana_oauth2_secret" = {
+    owner = "grafana";
+    mode = "0400";
+  };
+
   # Secrets (cloudflare_credentials + the *.roastlan.net cert live in common/acme.nix)
   sops.secrets.grafana_admin_password = {
     owner = "grafana";

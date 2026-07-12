@@ -41,7 +41,6 @@ let
   remoteRepo = "rclone:onedrive:restic-superslice";
   hostKey = "/etc/ssh/ssh_host_ed25519_key";
 
-  backupKanidm = "/var/lib/kanidm/backups";   # online-backup dumps, not the live db
   backupSops = "/var/lib/sops-nix/key.txt";
 
   retentionPolicy = [
@@ -64,7 +63,7 @@ let
     fi
   '';
 
-  paths = [ backupKanidm backupSops hostKey ];
+  paths = [ backupSops hostKey ];
 in
 {
   services.restic.backups = {
