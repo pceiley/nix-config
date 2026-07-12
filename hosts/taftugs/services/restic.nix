@@ -31,6 +31,7 @@ let
   # and the document blobs on the dedicated ZFS dataset at /data/papra.
   papraStatePath = "/var/lib/papra";
   papraDocsPath = "/data/papra";
+  kanidmBackupPath = "/var/lib/kanidm/backups";   # online-backup dumps, not the live db
 
   # Backed up to both repos. Immich is local-only (too large for the OneDrive
   # quota), so it's appended to the local paths rather than living here.
@@ -38,6 +39,7 @@ let
     familyPath otherPath paperlessPath
     actualPath mealiePath
     papraStatePath papraDocsPath
+    kanidmBackupPath
   ];
 
   excludes = [

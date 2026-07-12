@@ -12,6 +12,7 @@
     ./services/actual.nix
     #./services/immich.nix
     ./services/jellyfin.nix
+    ./services/kanidm.nix
     ./services/mealie.nix
     #./services/nextcloud.nix
     ./services/nginx.nix
