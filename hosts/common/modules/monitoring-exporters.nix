@@ -10,7 +10,7 @@
 { ... }:
 
 let
-  prometheusHost = "192.168.5.5"; # superslice
+  prometheusHost = "192.168.6.4"; # superslice
 in
 {
   services.prometheus.exporters.node = {

@@ -108,7 +108,7 @@
 
   networking.hosts = {
       "192.168.6.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
-      "192.168.5.5"  = [ "superslice" "superslice.srv.roastlan.net" ];
+      "192.168.6.4"  = [ "superslice" "superslice.srv.roastlan.net" ];
   };
 
   systemd.network.enable = true;

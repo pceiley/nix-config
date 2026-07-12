@@ -64,27 +64,12 @@
   };
   networking.hosts = {
       "192.168.6.3" = [ "taftugs" "taftugs.srv.roastlan.net" ];
-      "192.168.5.5"  = [ "superslice" "superslice.srv.roastlan.net" ];
+      "192.168.6.4"  = [ "superslice" "superslice.srv.roastlan.net" ];
   };
 
   systemd.network.enable = true;
 
-  #
-  # This is now handled by the bridge configured in services/virtualisation.nix
-  #
-  # systemd.network.networks."10-eno1" = {
-  #   matchConfig.Name = "eno1";
-  #   networkConfig = {
-  #     IPv6AcceptRA = true;
-  #   };
-  #   address = [ "192.168.5.5/24" ];
-  #   gateway = [ "192.168.5.254" ];
-  #   dns = [ "192.168.5.254" ];
-
-  #   # make the routes on this interface a dependency for network-online.target
-  #   linkConfig.RequiredForOnline = "routable";
-  # };
-
+  # Networking NIC config is located in services/virtualisation.nix
 
   system.stateVersion = "23.11";
 
