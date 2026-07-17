@@ -69,6 +69,10 @@
 
   systemd.network.enable = true;
 
+  # iperf3
+  networking.firewall.allowedTCPPorts = [ 5201 ];
+  networking.firewall.allowedUDPPorts = [ 5201 ];
+
   # Networking NIC config is located in services/virtualisation.nix
 
   system.stateVersion = "23.11";
