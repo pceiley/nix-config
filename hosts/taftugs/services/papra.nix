@@ -1,16 +1,19 @@
 # Papra - minimalist document archiving, gated by Kanidm SSO
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   port = 1221;
   domain = "papra.roastlan.net";
 in
 {
+  disabledModules = [ "services/web-apps/papra.nix" ];
+  imports = [ "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/papra.nix" ];
+
   services.papra = {
     enable = true;
 
-    #package = pkgs.unstable.papra;
+    package = pkgs.unstable.papra;
 
     # AUTH_SECRET and the Kanidm client secret (embedded in AUTH_PROVIDERS_CUSTOMS)
     # come from the sops template below, never the nix store.
