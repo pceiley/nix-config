@@ -10,10 +10,9 @@
 #    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
-
     sops-nix.url = "github:Mic92/sops-nix";
-
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, ... }@inputs: {
@@ -26,7 +25,10 @@
       };
       taftugs = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; }; # Pass flake inputs to our config
-        modules = [ ./hosts/taftugs ];
+        modules = [
+          ./hosts/taftugs
+          inputs.quadlet-nix.nixosModules.quadlet
+        ];
       };
     };
 
