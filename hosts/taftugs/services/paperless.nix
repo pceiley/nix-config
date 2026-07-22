@@ -29,14 +29,25 @@
     settings.PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS = true;
 
     # PAPERLESS_SOCIALACCOUNT_PROVIDERS carries the client secret, so it's built
-    # entirely in the sops-templated env file below rather than `settings`
+    # entirely in the sops-templated files below rather than `settings`
     # (settings values land in the unit file, which is world-readable).
+    #
+    # The JSON itself is delivered via PAPERLESS_SOCIALACCOUNT_PROVIDERS_FILE
+    # (a path, in the .env file) rather than embedding the JSON directly as an
+    # EnvironmentFile= value - systemd's EnvironmentFile parser does shell-style
+    # quote processing and strips unescaped " characters, which silently
+    # corrupts inline JSON. Pointing at a separate raw JSON file avoids that.
     environmentFile = config.sops.templates."paperless-oidc.env".path;
   };
 
   sops.secrets."paperless_oauth2_secret" = { };
+
+  sops.templates."paperless-oidc.json".content = ''
+    {"openid_connect":{"OAUTH_PKCE_ENABLED":true,"SCOPE":["openid","profile","email","groups"],"APPS":[{"provider_id":"kanidm","name":"Kanidm","client_id":"paperless","secret":"${config.sops.placeholder."paperless_oauth2_secret"}","settings":{"server_url":"https://idm.roastlan.net/oauth2/openid/paperless","token_auth_method":"client_secret_basic"}}]}}
+  '';
+
   sops.templates."paperless-oidc.env".content = ''
-    PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":true,"SCOPE":["openid","profile","email","groups"],"APPS":[{"provider_id":"kanidm","name":"Kanidm","client_id":"paperless","secret":"${config.sops.placeholder."paperless_oauth2_secret"}","settings":{"server_url":"https://idm.roastlan.net/oauth2/openid/paperless","token_auth_method":"client_secret_basic"}}]}}
+    PAPERLESS_SOCIALACCOUNT_PROVIDERS_FILE=${config.sops.templates."paperless-oidc.json".path}
   '';
 
   services.nginx = {
