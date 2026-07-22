@@ -50,7 +50,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "count(node_systemd_unit_state{state=\"active\", name=~\"(actual|jellyfin|mealie|postgresql|qbittorrent|sabnzbd|nginx|mullvad|prometheus|prometheus-node-exporter|alertmanager|grafana|libvirtd|paperless-.+|samba-.+)\\\\.service\"} == 0) or vector(0)",
+          "expr": "count(node_systemd_unit_state{state=\"active\", name=~\"(actual|jellyfin|mealie|papra|postgresql|qbittorrent|sabnzbd|nginx|mullvad|prometheus|prometheus-node-exporter|alertmanager|grafana|libvirtd|paperless-.+|samba-.+)\\\\.service\"} == 0) or vector(0)",
           "instant": true,
           "refId": "A"
         }
@@ -108,7 +108,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "node_systemd_unit_state{state=\"active\", name=~\"(actual|jellyfin|mealie|postgresql|qbittorrent|sabnzbd|nginx|mullvad|prometheus|prometheus-node-exporter|alertmanager|grafana|libvirtd|paperless-.+|samba-.+)\\\\.service\"}",
+          "expr": "node_systemd_unit_state{state=\"active\", name=~\"(actual|jellyfin|mealie|papra|postgresql|qbittorrent|sabnzbd|nginx|mullvad|prometheus|prometheus-node-exporter|alertmanager|grafana|libvirtd|paperless-.+|samba-.+)\\\\.service\"}",
           "format": "table",
           "instant": true,
           "refId": "A"
