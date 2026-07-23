@@ -19,9 +19,11 @@
     ./services/paperless.nix
     ./services/papra.nix
     ./services/postgresql.nix
-    ./services/oauth2-proxy.nix
+    #./services/oauth2-proxy.nix
     #./services/plex.nix
+    ./services/prowlarr.nix
     ./services/qbittorrent.nix
+    ./services/qui.nix
     ./services/restic.nix
     ./services/restic-recv.nix
     #./services/sabnzbd.nix

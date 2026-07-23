@@ -114,13 +114,13 @@ in
         scopeMaps."mealie.admins" = [ "openid" "email" "profile" "groups" ];
       };
 
-      systems.oauth2.qbittorrent = {
-        displayName = "qBittorrent";
-        originUrl = "https://bt.roastlan.net/oauth2/callback";
+      systems.oauth2.qui = {
+        displayName = "qui";
+        originUrl = "https://bt.roastlan.net/api/auth/oidc/callback";
         originLanding = "https://bt.roastlan.net/";
-        basicSecretFile = config.sops.secrets."qbittorrent_oauth2_secret".path;
+        basicSecretFile = config.sops.secrets."qui_oauth2_secret".path;
         preferShortUsername = true;
-        scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" "groups" ];
+        scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" ];
       };
 
       systems.oauth2.paperless = {
@@ -148,6 +148,16 @@ in
         # papra does its own per-account authz + first-login-admin, no group claim needed.
         scopeMaps."papra.access" = [ "openid" "email" "profile" ];
       };
+
+      systems.oauth2.prowlarr = {
+        displayName = "Prowlarr";
+        originUrl = "https://indexers.roastlan.net/oauth2/callback";
+        originLanding = "https://indexers.roastlan.net/";
+        basicSecretFile = config.sops.secrets."prowlarr_oauth2_secret".path;
+        preferShortUsername = true;
+        scopeMaps."qbittorrent.access" = [ "openid" "email" "profile" "groups" ];
+      };
+
     };
   };
 
@@ -179,8 +189,10 @@ in
     "actual_oauth2_secret".owner = "kanidm";
     "grafana_oauth2_secret".owner = "kanidm";
     "mealie_oauth2_secret".owner = "kanidm";
-    "qbittorrent_oauth2_secret".owner = "kanidm";
     "paperless_oauth2_secret".owner = "kanidm";
     "papra_oauth2_secret".owner = "kanidm";
+    "prowlarr_oauth2_secret".owner = "kanidm";
+    "qbittorrent_oauth2_secret".owner = "kanidm";
+    "qui_oauth2_secret".owner = "kanidm";
   };
 }

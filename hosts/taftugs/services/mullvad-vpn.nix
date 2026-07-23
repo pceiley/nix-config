@@ -21,7 +21,10 @@
     enable = true;
     wireguardConfigFile = config.sops.secrets.wireguard_wg0_conf.path;
     # Expose the qBittorrent WebUI from the host: host:58080 -> namespace:58080.
-    portMappings = [{ from = 58080; to = 58080; }];
+    portMappings = [
+      { from = 58080; to = 58080; }
+      { from = 9696; to = 9696; }
+    ];
 
     namespaceAddress = "172.16.15.1"; # vpn netns side (qBittorrent WebUI)
     bridgeAddress = "172.16.15.5";    # default netns / host side
