@@ -41,12 +41,15 @@ Back up, so the reinstalled host keeps its identity and data:
   * `/srv` (e.g. `/srv/plex`, `/srv/qbittorrent`, `/srv/unifi`)
   * `/var/lib` for service/database state (postgresql, paperless, immich, etc. —
     confirm per service `dataDir`)
+* On `taftugs`, most service data actually lives on the ZFS **`data`** pool
+  (`zfs.extraPools = [ "data" ]` in the host config), not on the root disk —
+  the samba shares, Papra, Paperless media, etc. **Do not wipe or repartition
+  those disks** when reinstalling; only the boot/root disk gets wiped. The
+  pool is re-imported automatically on boot as long as `networking.hostId`
+  in the host config (currently `8ec040f1`) matches what created the pool —
+  if you ever need to import it manually: `zpool import -f data`.
 * On `taftugs`, the local restic repo lives on the external disk mounted at
   `/mnt/usb-backup` (separate UUID-mounted ext4) — leave that disk untouched.
-
-> Note: nothing in the current config uses `/persist` (the old
-> `/persist/secrets` plaintext workflow is gone now that secrets are in sops).
-> Only back it up if you still keep something there manually.
 
 ### Install
 

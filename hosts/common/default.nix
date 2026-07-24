@@ -122,7 +122,7 @@
         moon = "curl -s wttr.in/Moon";
         pubip = "curl -s ifconfig.me/ip";
         wttr = "curl -s wttr.in && curl -s v2.wttr.in";
-        wttr-bas = "curl -s wttr.in/basingstoke && curl -s v2.wttr.in/basingstoke";
+        wttr-pan = "curl -s wttr.in/panania && curl -s v2.wttr.in/panania";
       };
     };
 
