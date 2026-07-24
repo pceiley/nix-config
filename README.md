@@ -6,9 +6,9 @@ Hosts: **`taftugs`** and **`superslice`**. Build/switch with
 `sudo nixos-rebuild switch --flake .#<hostname>` (or the `justfile` recipes).
 
 Both hosts use **systemd-boot (UEFI)** with two partitions — an ESP at `/boot`
-(FAT32, label `boot`) and root at `/` (XFS, label `nixos`). `superslice` also has
-a swap partition; `taftugs` does not. There is **no impermanence** — the root
-filesystem is fully persistent.
+(FAT32, label `boot`) and root at `/` (XFS, label `nixos`). Neither host has a
+swap partition or swap file — both use **zramSwap** instead. There is
+**no impermanence** — the root filesystem is fully persistent.
 
 ## Secrets (sops-nix)
 
@@ -55,12 +55,10 @@ Back up, so the reinstalled host keeps its identity and data:
 1. Partition (GPT):
    * ESP: ~1 GiB, type EFI System — `mkfs.vfat -F32 -n boot /dev/disk/by-id/…-part1`
    * Root: remainder — `mkfs.xfs -L nixos /dev/disk/by-id/…-part2`
-   * (`superslice` only) a swap partition — `mkswap /dev/disk/by-id/…-part3`
    * The labels **must** be exactly `boot` and `nixos` to match the `by-label`
      mounts in the host config.
 1. Mount: `mount /dev/disk/by-label/nixos /mnt` then
    `mkdir -p /mnt/boot && mount /dev/disk/by-label/boot /mnt/boot`
-   (and `swapon` on `superslice`).
 1. **Restore identity before installing** so the system keeps its host key and can
    decrypt sops on first boot:
    * `install -d -m700 /mnt/etc/ssh` and copy the backed-up `ssh_host_*` into it

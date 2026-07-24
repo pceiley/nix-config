@@ -19,7 +19,6 @@
     ./services/paperless.nix
     ./services/papra.nix
     ./services/postgresql.nix
-    #./services/oauth2-proxy.nix
     #./services/plex.nix
     ./services/prowlarr.nix
     ./services/qbittorrent.nix

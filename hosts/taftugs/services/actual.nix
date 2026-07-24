@@ -4,7 +4,7 @@
 {
   services.actual = {
     enable = true;
-    openFirewall = true;
+    # openFirewall = true;
     package = pkgs.unstable.actual-server;
     settings = {
       hostname = "127.0.0.1";

@@ -16,15 +16,6 @@
           config.allowUnfree = true;
         };
 
-        ## Workaround to manually pin the plex version
-        #plex = prev.plex.overrideAttrs (oldAttrs: {
-        #  version = "1.42.1.10060-4e8b05daf";
-        #  src = prev.fetchurl {
-        #    url = "https://downloads.plex.tv/plex-media-server-new/1.42.1.10060-4e8b05daf/debian/plexmediaserver_1.42.1.10060-4e8b05daf_amd64.deb";
-        #    sha256 = "3a822dbc6d08a6050a959d099b30dcd96a8cb7266b94d085ecc0a750aa8197f4";
-        #  };
-        #});
-
       })
     ];
 
@@ -50,10 +41,9 @@
   nix = {
     settings = {
       #trusted-users = [ "root" "@wheel" ];
-      auto-optimise-store = lib.mkDefault true;
+      auto-optimise-store = lib.mkDefault false;
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
-      #system-features = [ "kvm" "big-parallel" "nixos-test" ];
       flake-registry = ""; # Disable global flake registry
     };
     gc = {
@@ -61,6 +51,13 @@
       dates = "weekly";
       # Delete older generations too
       options = "--delete-older-than 10d";
+    };
+    # Store optimisation (hardlinking dedupe) moved off the build path and onto
+    # a schedule instead, since auto-optimise-store hashes every file added to
+    # the store on every build/switch.
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
     };
 
     # Add each flake input as a registry
@@ -121,15 +118,6 @@
         rebuild-host = "sudo nixos-rebuild switch --flake $HOME/nix-config";
         rebuild-lock = "pushd $HOME/nix-config && nix flake lock --recreate-lock-file && popd";
       };
-      shellAliases = {
-        moon = "curl -s wttr.in/Moon";
-        pubip = "curl -s ifconfig.me/ip";
-        wttr = "curl -s wttr.in && curl -s v2.wttr.in";
-        wttr-bas = "curl -s wttr.in/basingstoke && curl -s v2.wttr.in/basingstoke";
-      };
-    };
-    zsh = {
-      enable = true;
       shellAliases = {
         moon = "curl -s wttr.in/Moon";
         pubip = "curl -s ifconfig.me/ip";
