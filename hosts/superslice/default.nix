@@ -9,9 +9,6 @@
     ../common/modules/monitoring-exporters.nix
     ../common/modules/restic-metrics.nix
 
-    #./services/container-unifi.nix
-    #./services/unifi.nix
-    #./services/kanidm.nix
     ./services/monitoring.nix
     ./services/restic.nix
     ./services/virtualisation.nix
@@ -47,12 +44,12 @@
       fsType = "vfat";
     };
 
-  swapDevices = [{
-    device = "/swap";
-    size = 32*1024;
-  }];
+  # swapDevices = [{
+  #   device = "/swap";
+  #   size = 32*1024;
+  # }];
 
-  #zramSwap.enable = true;
+  zramSwap.enable = true;
 
   services.thermald.enable = lib.mkDefault true;
 
