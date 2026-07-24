@@ -14,7 +14,7 @@ in
     # not via the host firewall (qBittorrent no longer listens on the host).
     openFirewall = false;
     #profileDir = "/srv/qbittorrent";
-    #package = pkgs.unstable.qbittorrent-nox;
+    package = pkgs.unstable.qbittorrent-nox;
     webuiPort = 58080;
 
     serverConfig = {

@@ -15,6 +15,7 @@ in
   services.prowlarr = {
     enable = true;
     openFirewall = false; # exposed via the VPN namespace portMapping instead
+    package = pkgs.unstable.prowlarr;
 
     # Per wiki.servarr.com/prowlarr/faq: External is "Configurable via
     # Config File Only" - deliberately absent from the UI dropdown, not a
