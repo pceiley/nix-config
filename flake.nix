@@ -4,13 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    # Home manager
-#    home-manager.url = "github:nix-community/home-manager/release-23.05";
-#    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
     nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
